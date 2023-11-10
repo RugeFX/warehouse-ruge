@@ -3,14 +3,12 @@ const prisma = new PrismaClient()
 const bcrypt = require ('bcrypt')
 
 async function main (){
-    await prisma.position.upsert({
-      where: {},
-      update: {},
-      create: {
+  const password = await bcrypt.hash("12345",10)
+    await prisma.position.create({
+      data: {
         name: 'SuperAdmin',
         Staff: {
           create: {
-            positionId:1,
             name:"Raditya",
             registerDate: new Date(),
             address:"jl.tengki",
@@ -18,8 +16,7 @@ async function main (){
             User:{
               create:{
                 username:"superadmin123",
-                password: bcrypt.hash("12345"),
-                staffId : 1
+                password: password,
               }
             }
           },

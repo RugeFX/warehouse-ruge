@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client'
+const { PrismaClient } = require('@prisma/client')
 const express = require("express");
 const dotenv = require("dotenv");
 const prisma = new PrismaClient()

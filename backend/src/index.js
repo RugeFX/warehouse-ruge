@@ -1,6 +1,11 @@
+import { PrismaClient } from '@prisma/client'
 const express = require("express");
+const dotenv = require("dotenv");
+const prisma = new PrismaClient()
+
 const app = express();
-const PORT = 3000;
+dotenv.config()
+const PORT = process.env.PORT;
 
 app.use(express.json());
 
@@ -10,6 +15,9 @@ app.get("/", (req, res) => {
   });
 });
 
+app.get('/api',(req,res)=>{
+  res.send("hello world")
+})
 app.listen(PORT, () => {
   console.log(`Server running on port : ${PORT}`);
-});
+}); 

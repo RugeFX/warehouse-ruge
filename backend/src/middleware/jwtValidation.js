@@ -21,3 +21,4 @@ const jwtValidation = ( req,res,next)=>{
     }
     next()
 }
+module.exports = jwtValidation

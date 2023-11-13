@@ -23,18 +23,6 @@ async function main (){
         },
       },
     })
-    // await prisma.staff.create({
-            // positionId:1,
-            // name:"Raditya",
-            // registerDate: new Date(),
-            // address:"jl.tengki",
-            // phone:"081219578713",
-    // })
-    // await prisma.user.create({
-            // username:"superadmin123",
-            // password: bcrypt.hash("12345"),
-            // staffId : 1
-    // })
 }
 main()
   .then(async () => {

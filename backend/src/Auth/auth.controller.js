@@ -45,4 +45,15 @@ router.post('/login',multer().none(),async (req,res)=>{
 
 })
 
+router.post("/token",async(req,res)=>{
+    try{
+        const {refreshToken} = req.body
+        if(!refreshToken){
+            
+        }
+    }catch(err){
+
+    }
+})
+
 module.exports = router;

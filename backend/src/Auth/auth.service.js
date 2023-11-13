@@ -1,5 +1,8 @@
-const { firstWhereUsername } = require("./auth.repository")
+
+const { firstWhereUsername, firstWhereRefreshToken, deleteToken } = require("./auth.repository")
 const bcrypt = require('bcrypt')
+const jwt = require("jsonwebtoken");  
+const { refreshToken } = require("../db");
 
 const getUser = async(username,password)=>{
         const user = await firstWhereUsername(username)
@@ -12,6 +15,24 @@ const getUser = async(username,password)=>{
         }
         return user
 }
+
+const getRefreshToken = async(refreshToken)=>{
+    const Token = await firstWhereRefreshToken(refreshToken)
+    if(!Token){
+        throw new Error("Invalid Token")
+    }
+}
+
+const createToken =(payload)=>{
+    return jwt.sign(payload,process.env.SECRET_SERVER,{expiresIn:"15s"})
+}
+
+const deleteRefreshToken = async(refreshToken)=>{
+   await deleteToken(refreshToken)
+}
 module.exports = {
-    getUser
+    getUser,
+    getRefreshToken,
+    createToken,
+    deleteRefreshToken
 }

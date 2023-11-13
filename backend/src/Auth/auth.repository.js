@@ -8,7 +8,25 @@ const firstWhereUsername = async (username) =>{
         })
         return user
 }
+const firstWhereRefreshToken = async (token) =>{
+        const refreshToken = await prisma.refreshToken.findUnique({
+            where: {
+                token
+            }
+        })
+        return refreshToken
+}
+const deleteToken = async(token)=>{
+    const deletedToken = await prisma.refreshToken.delete({
+        where:{
+            token
+        }
+    })
+    return deletedToken
+}
 
 module.exports = {
-    firstWhereUsername
+    firstWhereUsername,
+    firstWhereRefreshToken,
+    deleteToken
 }

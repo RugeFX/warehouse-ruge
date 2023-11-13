@@ -1,23 +1,17 @@
-const { PrismaClient } = require('@prisma/client')
 const express = require("express");
 const dotenv = require("dotenv");
-const prisma = new PrismaClient()
 
+//controller
+const AuthController = require('./Auth/auth.controller')
+//------------------------------------------------------------//
 const app = express();
 dotenv.config()
 const PORT = process.env.PORT;
 
 app.use(express.json());
 
-app.get("/", (req, res) => {
-  res.json({
-    hello: "world",
-  });
-});
+app.use("/auth",AuthController) 
 
-app.get('/api',(req,res)=>{
-  res.send("hello world")
-})
 app.listen(PORT, () => {
   console.log(`Server running on port : ${PORT}`);
 }); 

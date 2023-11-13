@@ -13,10 +13,10 @@ function App() {
 
   return (
     <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
-      <main className="w-full p-5 min-h-screen h-full bg-gradient-to-br from-gray-900 to-emerald-950">
+      <main className="w-full p-5 min-h-screen h-full bg-background">
         <ThemeToggler />
         <div className="flex flex-col gap-3 items-center mb-5">
-          <h1 className="text-center text-3xl font-bold text-white">Hello world</h1>
+          <h1 className="text-center text-3xl font-bold text-foreground">Hello world</h1>
           <Button className="bg-emerald-600 hover:bg-emerald-700" onClick={onClick}>
             Count is {count}
           </Button>

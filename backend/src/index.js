@@ -1,17 +1,17 @@
-const express = require("express");
-const dotenv = require("dotenv");
+const express = require('express')
+const dotenv = require('dotenv')
 
-//controller
+// controller
 const AuthController = require('./Auth/auth.controller')
-//------------------------------------------------------------//
-const app = express();
+// ------------------------------------------------------------//
+const app = express()
 dotenv.config()
-const PORT = process.env.PORT;
+const PORT = process.env.PORT
 
-app.use(express.json());
+app.use(express.json())
 
-app.use("/auth",AuthController) 
+app.use('/auth', AuthController)
 
 app.listen(PORT, () => {
-  console.log(`Server running on port : ${PORT}`);
-}); 
+  console.log(`Server running on port : ${PORT}`)
+})

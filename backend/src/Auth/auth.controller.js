@@ -33,7 +33,8 @@ router.post('/login',multer().none(),async (req,res)=>{
         res.json({
             message: 'Login successful',
             user: user,
-            token:token
+            token:token,
+            refreshtoken:refreshtoken
           });
     }
     catch(error){

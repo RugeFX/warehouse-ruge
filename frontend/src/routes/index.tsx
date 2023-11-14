@@ -1,4 +1,5 @@
 import HomePage from "@/pages/HomePage";
+import TodosPage from "@/pages/TodosPage";
 import { createBrowserRouter } from "react-router-dom";
 
 export const router = createBrowserRouter([
@@ -8,6 +9,10 @@ export const router = createBrowserRouter([
       {
         index: true,
         element: <HomePage />,
+      },
+      {
+        path: "todos",
+        element: <TodosPage />,
       },
     ],
   },

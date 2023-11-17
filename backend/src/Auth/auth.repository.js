@@ -1,9 +1,21 @@
 const prisma = require('../db')
+const bcrypt = require('bcrypt')
 
 const firstWhereUsername = async (username) => {
   const user = await prisma.user.findUnique({
     where: {
       username
+    },
+    include: {
+      Staff: {
+        include: {
+          Position: {
+            include: {
+              Privilege: true
+            }
+          }
+        }
+      }
     }
   })
   return user
@@ -25,8 +37,21 @@ const deleteToken = async (token) => {
   return deletedToken
 }
 
+const createUser = async (username, password, staffId) => {
+  password = await bcrypt.hash(password, 10)
+  const newUser = await prisma.user.create({
+    data: {
+      username,
+      password,
+      staffId
+    }
+  })
+  return newUser
+}
+
 module.exports = {
   firstWhereUsername,
   firstWhereRefreshToken,
-  deleteToken
+  deleteToken,
+  createUser
 }

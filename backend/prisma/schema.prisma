@@ -7,17 +7,55 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+
 model Position {
   id        Int      @id @default(autoincrement())
   name      String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  Staff     Staff?
+  Staff     Staff[]
+  Privilege Privilege[]
 }
+model MenuGroup {
+  id           Int      @id @default(autoincrement())
+  name         String
+  icon         String  
+  MenuItem     MenuItem[] 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model MenuItem {
+  id           Int      @id @default(autoincrement())
+  name         String
+  icon         String  
+  url          String  
+  MenuGroupId  Int
+  MenuGroup    MenuGroup @relation(fields: [MenuGroupId], references: [id])
+  Privilege    Privilege[] 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Privilege {
+  id           Int      @id @default(autoincrement())
+  view         Int
+  add          Int  
+  edit         Int  
+  delete       Int  
+  MenuItemId   Int
+  positionId   Int
+  MenuItem     MenuItem @relation(fields: [MenuItemId], references: [id])
+  Position     Position @relation(fields: [positionId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+
 
 model Staff {
   id           Int      @id @default(autoincrement())
-  positionId   Int      @unique
+  positionId   Int
   name         String   @unique
   registerDate DateTime
   address      String

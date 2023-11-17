@@ -1,4 +1,4 @@
-const { firstWhereUsername, firstWhereRefreshToken, deleteToken } = require('./auth.repository')
+const { firstWhereUsername, firstWhereRefreshToken, deleteToken, createUser } = require('./auth.repository')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 
@@ -28,9 +28,15 @@ const createToken = (payload) => {
 const deleteRefreshToken = async (refreshToken) => {
   await deleteToken(refreshToken)
 }
+
+const creatingUser = async (username, password, staffId) => {
+  return await createUser(username, password, staffId)
+}
+
 module.exports = {
   getUser,
   getRefreshToken,
   createToken,
-  deleteRefreshToken
+  deleteRefreshToken,
+  creatingUser
 }

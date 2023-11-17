@@ -1,7 +1,7 @@
 const express = require('express')
 const multer = require('multer')
-const { loginSchema } = require('../Validation/validation')
-const { getUser, getRefreshToken, createToken, deleteRefreshToken } = require('./auth.service')
+const { loginSchema, userSchema } = require('../Validation/validation')
+const { getUser, getRefreshToken, createToken, deleteRefreshToken, creatingUser } = require('./auth.service')
 const jwt = require('jsonwebtoken')
 const prisma = require('../db')
 const jwtValidation = require('../middleware/jwtValidation')
@@ -86,6 +86,33 @@ router.delete('/logout', jwtValidation, async (req, res) => {
     })
   } catch (error) {
     res.status(400).json({
+      error: error.message || 'Unexpected error'
+    })
+  }
+})
+
+router.post('/register', jwtValidation, async (req, res) => {
+  try {
+    const { username, password, staffId } = req.body
+    await userSchema.validateAsync({ username, password, staffId })
+    const newUser = await creatingUser(username, password, staffId)
+
+    return res.status(200).json({
+      message: 'successful create new user',
+      user: newUser
+    })
+  } catch (error) {
+    if (error.code === 'P2002' && error.meta.target.includes('staffId')) {
+      return res.status(400).json({
+        error: 'staff already have user account'
+      })
+    }
+    if (error.code === 'P2002' && error.meta.target.includes('username')) {
+      return res.status(400).json({
+        error: 'username already exists'
+      })
+    }
+    return res.status(400).json({
       error: error.message || 'Unexpected error'
     })
   }

@@ -22,7 +22,7 @@ apiClient.interceptors.response.use(
   async (err: AxiosError) => {
     const config = err.config as InternalAxiosRequestConfig<unknown> & { _retry?: boolean };
 
-    if (config.url !== "/auth/signin" && err.response) {
+    if (config.url !== "/auth/login" && err.response) {
       if (err.response.status === 401 && !config._retry) {
         config._retry = true;
 

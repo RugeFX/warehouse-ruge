@@ -1,11 +1,11 @@
 import DemoPayment from "@/components/DemoPayment";
 import ThemeToggler from "@/components/ThemeToggler";
 import { Button } from "@/components/ui/button";
-import { useCountStore } from "@/store";
+import { useStore } from "@/store";
 
 export default function HomePage() {
-  const count = useCountStore((state) => state.count);
-  const increment = useCountStore((state) => state.increment);
+  const count = useStore((state) => state.count);
+  const increment = useStore((state) => state.increment);
 
   return (
     <main className="w-full p-5 min-h-screen h-full bg-gradient-to-br from-gray-100 to-emerald-200 dark:from-gray-900 dark:to-emerald-950">

@@ -62,7 +62,7 @@ export default function UserAuthForm({ className, ...props }: UserAuthFormProps)
           </div>
           <Button disabled={isLoading}>
             {isLoading && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
-            Sign In with Email
+            Log In
           </Button>
         </div>
       </Form>

@@ -3,3 +3,13 @@ export type User = {
   username: string;
   staffId: number;
 };
+
+export type LocalUserInfo = {
+  accessToken: string;
+  refreshToken: string;
+};
+
+export type PersistedInfo = {
+  state?: LocalUserInfo;
+  version: number;
+};

@@ -18,7 +18,8 @@ router.post('/login', async (req, res) => {
     const payload = {
       id: user.id,
       username: user.username,
-      staffId: user.staffId
+      staffId: user.staffId,
+      positionId: user.Staff.Position.id
     }
     const token = createToken(payload)
     const refreshtoken = jwt.sign(payload, process.env.SECRET_SERVER, { expiresIn: '7d' })

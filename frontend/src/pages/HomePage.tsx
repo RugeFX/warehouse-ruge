@@ -1,7 +1,9 @@
 import DemoPayment from "@/components/DemoPayment";
 import ThemeToggler from "@/components/ThemeToggler";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import { useStore } from "@/store";
+import { Link } from "react-router-dom";
 
 export default function HomePage() {
   const count = useStore((state) => state.count);
@@ -19,6 +21,15 @@ export default function HomePage() {
       <div className="mx-auto max-w-lg">
         <DemoPayment />
       </div>
+      <Link
+        to="login"
+        className={cn(
+          buttonVariants({ variant: "link" }),
+          "absolute right-2 top-2 md:right-4 md:top-4"
+        )}
+      >
+        Goto Login Page
+      </Link>
     </main>
   );
 }

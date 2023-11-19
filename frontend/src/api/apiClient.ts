@@ -1,5 +1,5 @@
 import axios, { type InternalAxiosRequestConfig, type AxiosError } from "axios";
-import { getLocalUserInfo, refreshAccessToken, updateLocalAccessToken } from "@/auth/AuthService";
+import { getLocalUserInfo, refreshAccessToken, updateLocalAccessToken } from "@/auth/authService";
 
 const apiClient = axios.create({
   baseURL: import.meta.env.VITE_BASE_API_URL ?? "http://localhost:5000",

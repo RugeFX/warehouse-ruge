@@ -72,7 +72,7 @@ module.exports = {
       },
       backgroundImage: {
         "radial-repeat":
-          "repeating-radial-gradient( circle at 0 0, transparent 0, #000000 22px ), repeating-linear-gradient( #16A34A55, #16A34A )",
+          "repeating-radial-gradient( circle at 0 0, transparent 0, hsl(var(--background)) 22px ), repeating-linear-gradient( hsl(var(--primary) / 0.1), hsl(var(--primary)) )",
       },
     },
   },

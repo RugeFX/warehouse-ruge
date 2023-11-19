@@ -15,7 +15,7 @@ function DemoPayment() {
         <CardDescription>Add a new payment method to your account.</CardDescription>
       </CardHeader>
       <CardContent className="grid gap-6">
-        <RadioGroup defaultValue="card" className="grid grid-cols-3 gap-4">
+        <RadioGroup defaultValue="card" className="grid min-[560px]:grid-cols-3 gap-4">
           <div>
             <RadioGroupItem value="card" id="card" className="peer sr-only" />
             <Label
@@ -55,7 +55,7 @@ function DemoPayment() {
           <Label htmlFor="number">Card number</Label>
           <Input id="number" placeholder="" />
         </div>
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid min-[560px]:grid-cols-3 gap-4">
           <div className="grid gap-2">
             <Label htmlFor="month">Expires</Label>
             <Select>

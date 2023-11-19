@@ -1,4 +1,4 @@
-import ThemeToggler from "@/components/ThemeToggler";
+import ThemeToggler from "@/components/theme/ThemeToggler";
 import TodosContainer from "@/components/TodosContainer";
 import { Button } from "@/components/ui/button";
 import useTodos from "@/hooks/query/useTodos";

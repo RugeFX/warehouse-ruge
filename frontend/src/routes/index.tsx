@@ -1,12 +1,12 @@
-import HomePage from "@/pages/HomePage";
-import LoginPage from "@/pages/LoginPage";
-import NotFoundPage from "@/pages/NotFoundPage";
-import TodosPage from "@/pages/TodosPage";
-import DashboardPage from "@/pages/dashboard/DashboardPage";
 import { type RouteObject, createBrowserRouter } from "react-router-dom";
+import HomePage from "@/pages/HomePage";
+import LoginPage from "@/pages/login";
+import NotFoundPage from "@/pages/NotFoundPage";
+import TodosPage from "@/pages/todos";
+import DashboardPage from "@/pages/dashboard";
+import AccessTestPage from "@/pages/AccessTestPage";
 import PrivateRoute from "./PrivateRoute";
 import GuestRoute from "./GuestRoute";
-import AccessTestPage from "@/pages/AccessTestPage";
 
 const privateRoutes: RouteObject = {
   element: <PrivateRoute />,

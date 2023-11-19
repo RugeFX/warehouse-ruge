@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
-import UserAuthForm from "@/components/UserAuthForm";
+import UserAuthForm from "./components/UserAuthForm";
 
 export default function LoginPage() {
   return (
@@ -18,7 +18,7 @@ export default function LoginPage() {
         </Link>
         <div className="relative hidden h-full flex-col bg-muted p-10 text-white dark:border-r lg:flex">
           <div className="absolute inset-0 bg-background bg-radial-repeat opacity-70" />
-          <div className="relative z-20 flex items-center text-lg font-medium">
+          <div className="relative z-20 flex items-center text-foreground text-lg font-medium">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"

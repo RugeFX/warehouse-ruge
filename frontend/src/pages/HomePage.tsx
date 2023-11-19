@@ -1,5 +1,5 @@
 import DemoPayment from "@/components/DemoPayment";
-import ThemeToggler from "@/components/ThemeToggler";
+import ThemeToggler from "@/components/theme/ThemeToggler";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useStore } from "@/store";

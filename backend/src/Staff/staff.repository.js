@@ -20,19 +20,20 @@ const findById = async (id) => {
   })
   return staff
 }
-const createData = async (name, registerDate, address, phone, positionId) => {
+const createData = async (name, registerDate, address, phone, image, positionId) => {
   const staff = await prisma.staff.create({
     data: {
       name,
       registerDate,
       address,
       phone,
+      // image,
       positionId
     }
   })
   return staff
 }
-const updateData = async (id, name, registerDate, address, phone, positionId) => {
+const updateData = async (id, name, registerDate, address, phone, image, positionId) => {
   const staff = await prisma.staff.update({
     where: {
       id
@@ -42,6 +43,7 @@ const updateData = async (id, name, registerDate, address, phone, positionId) =>
       registerDate,
       address,
       phone,
+      // image,
       positionId
     }
   })

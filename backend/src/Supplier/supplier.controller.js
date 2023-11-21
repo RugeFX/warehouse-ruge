@@ -1,16 +1,15 @@
 const express = require('express')
 const multer = require('multer')
-// const jwt = require('jsonwebtoken')
 const jwtValidation = require('../middleware/jwtValidation')
-const { getAllStaff, createStaff, getStaffById, updateStaff, deleteStaff } = require('./staff.service')
-const { staffSchema } = require('../Validation/validation')
+const { getAllSupplier, createSupplier, getSupplierById, updateSupplier, deleteSupplier } = require('./supplier.service')
+const { supplierSchema } = require('../Validation/validation')
 const fs = require('fs').promises
 
 const router = express.Router()
 
 const fileStorage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, 'images/staff')
+    cb(null, 'images/supplier')
   },
   filename: (req, file, cb) => {
     cb(null, new Date().getTime() + '-' + file.originalname)
@@ -30,7 +29,7 @@ router.use(jwtValidation)
 
 router.get('/', async (req, res) => {
   try {
-    const staff = await getAllStaff()
+    const staff = await getAllSupplier()
     return res.status(200).json({
       data: staff
     })
@@ -44,7 +43,7 @@ router.get('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
   const id = Number(req.params.id)
   try {
-    const staff = await getStaffById(id)
+    const staff = await getSupplierById(id)
     return res.status(200).json({
       data: staff
     })
@@ -55,14 +54,14 @@ router.get('/:id', async (req, res) => {
   }
 })
 router.post('/', async (req, res) => {
-  const { name, registerDate, address, phone, positionId } = req.body
+  const { name, registerDate, address, phone, information } = req.body
   const image = req.file.path
 
   try {
-    await staffSchema.validateAsync({ name, registerDate, address, phone, image, positionId })
-    const newData = await createStaff(name, registerDate, address, phone, image, positionId)
+    await supplierSchema.validateAsync({ name, registerDate, address, phone, image, information })
+    const newData = await createSupplier(name, registerDate, address, phone, image, information)
     return res.status(200).json({
-      message: 'Success Create new Staff"',
+      message: 'Success Create new Supplier',
       staff: newData
     })
   } catch (error) {
@@ -79,16 +78,15 @@ router.post('/', async (req, res) => {
 
 router.put('/:id', async (req, res) => {
   const id = Number(req.params.id)
-  const { name, registerDate, address, phone, positionId } = req.body
+  const { name, registerDate, address, phone, information } = req.body
   const imagepath = req.file.path
-
   try {
-    await staffSchema.validateAsync({ name, registerDate, address, phone, image: imagepath, positionId })
-    const supplier = await getStaffById(id)
+    await supplierSchema.validateAsync({ name, registerDate, address, phone, image: imagepath, information })
+    const supplier = await getSupplierById(id)
 
     const { image } = supplier
-    const newData = await updateStaff(id, name, registerDate, address, phone, imagepath, positionId)
     await fs.unlink(image)
+    const newData = await updateSupplier(id, name, registerDate, address, phone, imagepath, information)
     return res.status(200).json({
       message: 'Success Update Staff Data',
       staff: newData
@@ -113,14 +111,16 @@ router.put('/:id', async (req, res) => {
 router.delete('/:id', async (req, res) => {
   const id = Number(req.params.id)
   try {
-    const supplier = await getStaffById(id)
+    const supplier = await getSupplierById(id)
 
     const { image } = supplier
-    await deleteStaff(id)
+
+    await deleteSupplier(id)
+
     await fs.unlink(image)
 
     return res.status(200).json({
-      message: 'Success Delete Staff Data'
+      message: 'Success Delete Supplier Data'
     })
   } catch (error) {
     if (error.code === 'P2025') {

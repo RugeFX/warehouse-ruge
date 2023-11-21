@@ -51,8 +51,6 @@ model Privilege {
   updatedAt DateTime @updatedAt
 }
 
-
-
 model Staff {
   id           Int      @id @default(autoincrement())
   positionId   Int
@@ -60,10 +58,24 @@ model Staff {
   registerDate DateTime
   address      String
   phone        String
+  image        String   
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
   Position     Position @relation(fields: [positionId], references: [id])
   User         User?
+}
+
+model Supplier {
+  id           Int      @id @default(autoincrement())
+  idSupplier   String   @default(uuid())
+  name         String   @unique
+  registerDate DateTime
+  address      String
+  phone        String
+  image        String
+  information  String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 }
 
 model User {

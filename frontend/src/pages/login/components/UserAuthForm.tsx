@@ -1,5 +1,5 @@
 import { isAxiosError } from "axios";
-import { useForm, type SubmitHandler } from "react-hook-form";
+import { useForm, type SubmitHandler, FieldPath } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { cn } from "@/lib/utils";
@@ -21,7 +21,7 @@ interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 const loginSchema = z.object({
   username: z.string().min(4, { message: "Username length must be longer than 4" }),
-  password: z.string().min(5, { message: "Password length must be longer than 4" }),
+  password: z.string().min(5, { message: "Password length must be longer than 5" }),
 });
 
 type FormValues = z.infer<typeof loginSchema>;
@@ -49,31 +49,11 @@ export default function UserAuthForm({ className, ...props }: UserAuthFormProps)
       await loginMutate({ username, password });
       navigate("/dashboard");
     } catch (err) {
-      if (isAxiosError<{ error: string }>(err)) {
-        console.error("Axios error caught on login", err);
-
-        if (err.response) {
-          const { error } = err.response.data;
-
-          if (error.includes("not found")) {
-            setError("username", { type: "notFound", message: "User not found" });
-          } else if (error.includes("incorrect")) {
-            setError("password", { type: "incorrect", message: "Password is incorrect" });
-          }
-          return;
-        }
-
-        setError("root.server", {
-          type: "unexpected",
-          message: "An unexpected axios error has occured",
-        });
-      } else {
-        console.error("Error caught on login", err);
-        setError("root.server", {
-          type: "unexpected",
-          message: "An unexpected error has occured",
-        });
-      }
+      const {
+        field,
+        error: { type, message },
+      } = handleLoginError(err);
+      setError(field, { type, message });
     }
   };
 
@@ -118,4 +98,43 @@ export default function UserAuthForm({ className, ...props }: UserAuthFormProps)
       </Form>
     </div>
   );
+}
+
+function handleLoginError(err: unknown): {
+  field: FieldPath<FormValues> | `root.${string}` | "root";
+  error: { type: string; message: string };
+} {
+  if (isAxiosError<{ error: string }>(err)) {
+    console.error("Axios error caught on login", err);
+
+    if (err.response) {
+      const { error } = err.response.data;
+
+      if (error.includes("not found")) {
+        return { field: "username", error: { type: "notFound", message: "User not found" } };
+      } else if (error.includes("incorrect")) {
+        return {
+          field: "password",
+          error: { type: "incorrect", message: "Password is incorrect" },
+        };
+      }
+    }
+
+    return {
+      field: "root.server",
+      error: {
+        type: "unexpected",
+        message: "An unexpected axios error has occured",
+      },
+    };
+  } else {
+    console.error("Error caught on login", err);
+    return {
+      field: "root.server",
+      error: {
+        type: "unexpected",
+        message: "An unexpected error has occured",
+      },
+    };
+  }
 }

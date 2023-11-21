@@ -7,48 +7,48 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 model Position {
-  id        Int      @id @default(autoincrement())
+  id        Int         @id @default(autoincrement())
   name      String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  Staff     Staff[]
-  Privilege Privilege[]
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  staff     Staff[]
+  privilege Privilege[]
 }
+
 model MenuGroup {
-  id           Int      @id @default(autoincrement())
-  name         String
-  icon         String  
-  MenuItem     MenuItem[] 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id        Int        @id @default(autoincrement())
+  name      String
+  icon      String
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  menuItem  MenuItem[]
 }
 
 model MenuItem {
-  id           Int      @id @default(autoincrement())
-  name         String
-  icon         String  
-  url          String  
-  MenuGroupId  Int
-  MenuGroup    MenuGroup @relation(fields: [MenuGroupId], references: [id])
-  Privilege    Privilege[] 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id          Int         @id @default(autoincrement())
+  name        String
+  icon        String
+  url         String
+  menuGroupId Int
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  menuGroup   MenuGroup   @relation(fields: [menuGroupId], references: [id])
+  privilege   Privilege[]
 }
 
 model Privilege {
-  id           Int      @id @default(autoincrement())
-  view         Int
-  add          Int  
-  edit         Int  
-  delete       Int  
-  MenuItemId   Int
-  positionId   Int
-  MenuItem     MenuItem @relation(fields: [MenuItemId], references: [id])
-  Position     Position @relation(fields: [positionId], references: [id])
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id         Int      @id @default(autoincrement())
+  view       Int
+  add        Int
+  edit       Int
+  delete     Int
+  menuItemId Int
+  positionId Int
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  menuItem   MenuItem @relation(fields: [menuItemId], references: [id])
+  position   Position @relation(fields: [positionId], references: [id])
 }
 
 model Staff {
@@ -58,11 +58,11 @@ model Staff {
   registerDate DateTime
   address      String
   phone        String
-  image        String   
+  image        String
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
-  Position     Position @relation(fields: [positionId], references: [id])
-  User         User?
+  position     Position @relation(fields: [positionId], references: [id])
+  user         User?
 }
 
 model Supplier {
@@ -83,7 +83,7 @@ model User {
   username String @unique
   password String
   staffId  Int    @unique
-  Staff    Staff  @relation(fields: [staffId], references: [id])
+  staff    Staff  @relation(fields: [staffId], references: [id])
 }
 
 model RefreshToken {

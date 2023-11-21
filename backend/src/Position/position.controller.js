@@ -1,8 +1,17 @@
 const express = require('express')
 const multer = require('multer')
 // const jwt = require('jsonwebtoken')
-const jwtValidation = require('../middleware/jwtValidation')
-const { getAllPosition, createPosition, getPositionById, updatePosition, deletePosition, createPrivilege, getAllMenuItem, updatePrivilege } = require('./position.service')
+const jwtValidation = require('../Middleware/jwtValidation')
+const {
+  getAllPosition,
+  createPosition,
+  getPositionById,
+  updatePosition,
+  deletePosition,
+  createPrivilege,
+  getAllMenuItem,
+  updatePrivilege
+} = require('./position.service')
 const { positionSchema } = require('../Validation/validation')
 
 const router = express.Router()
@@ -51,7 +60,7 @@ router.post('/', async (req, res) => {
     for (const menuItem of menuItems) {
       const privilege = {
         positionId: newPosition.id,
-        MenuItemId: menuItem.id,
+        menuItemId: menuItem.id,
         view: 0,
         add: 0,
         edit: 0,

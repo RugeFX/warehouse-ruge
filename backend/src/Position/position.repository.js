@@ -1,4 +1,4 @@
-const prisma = require('../db')
+const prisma = require('../Db')
 
 const findAll = async () => {
   const position = await prisma.position.findMany({
@@ -12,7 +12,7 @@ const findAll = async () => {
 const findAllMenuItem = async () => {
   const privilege = await prisma.menuItem.findMany({
     include: {
-      MenuGroup: true
+      menuGroup: true
     }
   })
   return privilege
@@ -24,7 +24,7 @@ const findById = async (id) => {
       id
     },
     include: {
-      Privilege: true
+      privilege: true
     }
   })
   return position

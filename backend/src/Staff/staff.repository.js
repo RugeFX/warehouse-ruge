@@ -1,9 +1,9 @@
-const prisma = require('../db')
+const prisma = require('../Db')
 
 const findAll = async () => {
   const staff = await prisma.staff.findMany({
     include: {
-      Position: true
+      position: true
     }
   })
   return staff
@@ -15,7 +15,7 @@ const findById = async (id) => {
       id
     },
     include: {
-      Position: true
+      position: true
     }
   })
   return staff
@@ -27,7 +27,7 @@ const createData = async (name, registerDate, address, phone, image, positionId)
       registerDate,
       address,
       phone,
-      // image,
+      image,
       positionId
     }
   })
@@ -43,7 +43,7 @@ const updateData = async (id, name, registerDate, address, phone, image, positio
       registerDate,
       address,
       phone,
-      // image,
+      image,
       positionId
     }
   })

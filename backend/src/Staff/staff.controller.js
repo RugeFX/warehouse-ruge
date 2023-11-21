@@ -1,8 +1,14 @@
 const express = require('express')
 const multer = require('multer')
 // const jwt = require('jsonwebtoken')
-const jwtValidation = require('../middleware/jwtValidation')
-const { getAllStaff, createStaff, getStaffById, updateStaff, deleteStaff } = require('./staff.service')
+const jwtValidation = require('../Middleware/jwtValidation')
+const {
+  getAllStaff,
+  createStaff,
+  getStaffById,
+  updateStaff,
+  deleteStaff
+} = require('./staff.service')
 const { staffSchema } = require('../Validation/validation')
 const fs = require('fs').promises
 
@@ -18,7 +24,11 @@ const fileStorage = multer.diskStorage({
 })
 
 const fileFilter = (req, file, cb) => {
-  if (file.mimetype === 'image/png' || file.mimetype === 'image/jpg' || file.mimetype === 'image/jpeg') {
+  if (
+    file.mimetype === 'image/png' ||
+    file.mimetype === 'image/jpg' ||
+    file.mimetype === 'image/jpeg'
+  ) {
     cb(null, true)
   } else {
     cb(null, false)
@@ -83,11 +93,26 @@ router.put('/:id', async (req, res) => {
   const imagepath = req.file.path
 
   try {
-    await staffSchema.validateAsync({ name, registerDate, address, phone, image: imagepath, positionId })
+    await staffSchema.validateAsync({
+      name,
+      registerDate,
+      address,
+      phone,
+      image: imagepath,
+      positionId
+    })
     const supplier = await getStaffById(id)
 
     const { image } = supplier
-    const newData = await updateStaff(id, name, registerDate, address, phone, imagepath, positionId)
+    const newData = await updateStaff(
+      id,
+      name,
+      registerDate,
+      address,
+      phone,
+      imagepath,
+      positionId
+    )
     await fs.unlink(image)
     return res.status(200).json({
       message: 'Success Update Staff Data',

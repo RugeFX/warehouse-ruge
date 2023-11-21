@@ -1,4 +1,4 @@
-const prisma = require('../db')
+const prisma = require('../Db')
 const bcrypt = require('bcrypt')
 
 const firstWhereUsername = async (username) => {
@@ -7,11 +7,11 @@ const firstWhereUsername = async (username) => {
       username
     },
     include: {
-      Staff: {
+      staff: {
         include: {
-          Position: {
+          position: {
             include: {
-              Privilege: true
+              privilege: true
             }
           }
         }

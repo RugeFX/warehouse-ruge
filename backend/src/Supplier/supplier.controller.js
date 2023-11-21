@@ -1,7 +1,13 @@
 const express = require('express')
 const multer = require('multer')
-const jwtValidation = require('../middleware/jwtValidation')
-const { getAllSupplier, createSupplier, getSupplierById, updateSupplier, deleteSupplier } = require('./supplier.service')
+const jwtValidation = require('../Middleware/jwtValidation')
+const {
+  getAllSupplier,
+  createSupplier,
+  getSupplierById,
+  updateSupplier,
+  deleteSupplier
+} = require('./supplier.service')
 const { supplierSchema } = require('../Validation/validation')
 const fs = require('fs').promises
 
@@ -17,7 +23,11 @@ const fileStorage = multer.diskStorage({
 })
 
 const fileFilter = (req, file, cb) => {
-  if (file.mimetype === 'image/png' || file.mimetype === 'image/jpg' || file.mimetype === 'image/jpeg') {
+  if (
+    file.mimetype === 'image/png' ||
+    file.mimetype === 'image/jpg' ||
+    file.mimetype === 'image/jpeg'
+  ) {
     cb(null, true)
   } else {
     cb(null, false)
@@ -81,12 +91,27 @@ router.put('/:id', async (req, res) => {
   const { name, registerDate, address, phone, information } = req.body
   const imagepath = req.file.path
   try {
-    await supplierSchema.validateAsync({ name, registerDate, address, phone, image: imagepath, information })
+    await supplierSchema.validateAsync({
+      name,
+      registerDate,
+      address,
+      phone,
+      image: imagepath,
+      information
+    })
     const supplier = await getSupplierById(id)
 
     const { image } = supplier
     await fs.unlink(image)
-    const newData = await updateSupplier(id, name, registerDate, address, phone, imagepath, information)
+    const newData = await updateSupplier(
+      id,
+      name,
+      registerDate,
+      address,
+      phone,
+      imagepath,
+      information
+    )
     return res.status(200).json({
       message: 'Success Update Staff Data',
       staff: newData

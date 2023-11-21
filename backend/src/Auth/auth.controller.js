@@ -1,10 +1,16 @@
 const express = require('express')
 const multer = require('multer')
 const { loginSchema, userSchema } = require('../Validation/validation')
-const { getUser, getRefreshToken, createToken, deleteRefreshToken, creatingUser } = require('./auth.service')
+const {
+  getUser,
+  getRefreshToken,
+  createToken,
+  deleteRefreshToken,
+  creatingUser
+} = require('./auth.service')
 const jwt = require('jsonwebtoken')
-const prisma = require('../db')
-const jwtValidation = require('../middleware/jwtValidation')
+const prisma = require('../Db')
+const jwtValidation = require('../Middleware/jwtValidation')
 
 const router = express.Router()
 
@@ -19,7 +25,7 @@ router.post('/login', async (req, res) => {
       id: user.id,
       username: user.username,
       staffId: user.staffId,
-      positionId: user.Staff.Position.id
+      positionId: user.staff.positionId
     }
     const token = createToken(payload)
     const refreshtoken = jwt.sign(payload, process.env.SECRET_SERVER, { expiresIn: '7d' })

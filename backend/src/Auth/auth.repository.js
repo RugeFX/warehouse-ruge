@@ -9,11 +9,7 @@ const firstWhereUsername = async (username) => {
     include: {
       staff: {
         include: {
-          position: {
-            include: {
-              privilege: true
-            }
-          }
+          position: true
         }
       }
     }
@@ -49,9 +45,29 @@ const createUser = async (username, password, staffId) => {
   return newUser
 }
 
+const getMenu = async (positionId) => {
+  console.log(positionId)
+  const menus = await prisma.menuGroup.findMany({
+    include: {
+      menuItem: {
+        include: {
+          privilege: {
+            where: {
+              positionId,
+              view: 1
+            }
+          }
+        }
+      }
+    }
+  })
+  return menus
+}
+
 module.exports = {
   firstWhereUsername,
   firstWhereRefreshToken,
   deleteToken,
-  createUser
+  createUser,
+  getMenu
 }

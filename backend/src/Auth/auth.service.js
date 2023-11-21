@@ -1,4 +1,4 @@
-const { firstWhereUsername, firstWhereRefreshToken, deleteToken, createUser } = require('./auth.repository')
+const { firstWhereUsername, firstWhereRefreshToken, deleteToken, createUser, getMenu } = require('./auth.repository')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 
@@ -11,7 +11,8 @@ const getUser = async (username, password) => {
   if (comparePassword === false) {
     throw new Error('Password is incorrect !')
   }
-  return user
+  const privilege = await getMenu(user.staff.position.id)
+  return { user, privilege }
 }
 
 const getRefreshToken = async (refreshToken) => {

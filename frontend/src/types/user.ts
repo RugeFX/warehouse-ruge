@@ -66,6 +66,7 @@ export type Staff = {
   registerDate: string;
   address: string;
   phone: string;
+  image: string;
   createdAt: string;
   updatedAt: string;
   position: Position;

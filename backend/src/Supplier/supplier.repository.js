@@ -1,4 +1,4 @@
-const prisma = require('../db')
+const prisma = require('../Db')
 
 const findAll = async () => {
   const supplier = await prisma.supplier.findMany()

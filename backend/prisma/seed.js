@@ -1,19 +1,19 @@
-const prisma = require('../src/db')
+const prisma = require('../src/Db')
 const bcrypt = require('bcrypt')
 
 async function main () {
   const password = await bcrypt.hash('12345', 10)
-  await prisma.position.create({
+  const position = await prisma.position.create({
     data: {
       name: 'SuperAdmin',
-      Staff: {
+      staff: {
         create: {
           name: 'Raditya',
           registerDate: new Date(),
           address: 'jl.tengki',
           phone: '081219578713',
           image: 'null',
-          User: {
+          user: {
             create: {
               username: 'superadmin123',
               password
@@ -45,55 +45,55 @@ async function main () {
         name: 'Home',
         url: '/dashboard/app',
         icon: 'fa-house',
-        MenuGroupId: 1
+        menuGroupId: 1
       },
       {
         name: 'Position',
         url: '/dashboard/position',
         icon: 'fa-network-wired',
-        MenuGroupId: 3
+        menuGroupId: 3
       },
       {
         name: 'Staff',
         url: '/dashboard/staff',
         icon: 'fa-user-tie',
-        MenuGroupId: 3
+        menuGroupId: 3
       },
       {
         name: 'User',
         url: '/dashboard/user',
         icon: 'fa-users',
-        MenuGroupId: 3
+        menuGroupId: 3
       },
       {
         name: 'Product',
         url: '/dashboard/product',
         icon: 'fa-box',
-        MenuGroupId: 2
+        menuGroupId: 2
       },
       {
         name: 'Supplier',
         url: '/dashboard/supplier',
         icon: 'fa-people-carry-box',
-        MenuGroupId: 2
+        menuGroupId: 2
       },
       {
         name: 'Restock',
         url: '/dashboard/restock',
         icon: 'fa-square-plus',
-        MenuGroupId: 2
+        menuGroupId: 2
       },
       {
         name: 'Category',
         url: '/dashboard/category',
         icon: 'fa-layer-group',
-        MenuGroupId: 2
+        menuGroupId: 2
       },
       {
         name: 'Unit',
         url: '/dashboard/unit',
         icon: 'fa-ruler',
-        MenuGroupId: 2
+        menuGroupId: 2
       }
     ]
   })
@@ -101,15 +101,15 @@ async function main () {
 
   menuItem.forEach(async (menuItem) => {
     const privilege = {
-      positionId: 2,
-      MenuItemId: menuItem.id,
+      positionId: position.id,
+      menuItemId: menuItem.id,
       view: 1,
       add: 1,
       edit: 1,
       delete: 1
     }
     await prisma.privilege.create({
-      data: privilege
+      data: { ...privilege }
     })
   })
 }

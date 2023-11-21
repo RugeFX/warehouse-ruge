@@ -1,6 +1,6 @@
 import apiClient from "@/api/apiClient";
-import type { LoginPayload } from "@/types/auth";
-import type { LoginResponse, RefreshResponse } from "@/types/response";
+import type { LoginPayload, LogoutPayload } from "@/types/auth";
+import type { BaseResponse, LoginResponse, RefreshResponse } from "@/types/response";
 import type { PersistedInfo } from "@/types/user";
 
 const getPersistedInfo = () => {
@@ -12,8 +12,11 @@ export const login = async (payload: LoginPayload) => {
   return res.data;
 };
 
-export const logout = async () => {
-  await apiClient.delete("auth/logout");
+export const logout = async (payload: LogoutPayload) => {
+  const res = await apiClient.delete<BaseResponse>("auth/logout", {
+    data: { refreshToken: payload.refreshToken },
+  });
+  return res.data;
 };
 
 export const refreshAccessToken = async () => {

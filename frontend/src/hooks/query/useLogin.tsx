@@ -6,13 +6,14 @@ import type { AxiosError } from "axios";
 import { useAuthActions } from "@/store";
 
 export default function useLogin() {
-  const { setAccessToken, setRefreshToken } = useAuthActions();
+  const { setAccessToken, setRefreshToken, setUserData } = useAuthActions();
 
   return useMutation<LoginResponse, AxiosError<{ error: string }>, LoginPayload>({
     mutationFn: login,
-    onSuccess({ token: accessToken, refreshtoken: refreshToken }) {
+    onSuccess({ token: accessToken, refreshtoken: refreshToken, user }) {
       setAccessToken(accessToken);
       setRefreshToken(refreshToken);
+      setUserData(user);
     },
   });
 }

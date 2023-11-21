@@ -7,17 +7,28 @@ import DashboardPage from "@/pages/dashboard";
 import AccessTestPage from "@/pages/AccessTestPage";
 import PrivateRoute from "./PrivateRoute";
 import GuestRoute from "./GuestRoute";
+import ProfilePage from "@/pages/profile";
+import DashboardLayout from "@/layouts/dashboard";
 
 const privateRoutes: RouteObject = {
   element: <PrivateRoute />,
   children: [
     {
-      path: "dashboard",
-      element: <DashboardPage />,
-    },
-    {
-      path: "todos",
-      element: <TodosPage />,
+      element: <DashboardLayout />,
+      children: [
+        {
+          path: "dashboard",
+          element: <DashboardPage />,
+        },
+        {
+          path: "todos",
+          element: <TodosPage />,
+        },
+        {
+          path: "profile",
+          element: <ProfilePage />,
+        },
+      ],
     },
     {
       path: "access",

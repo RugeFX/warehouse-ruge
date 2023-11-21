@@ -10,12 +10,17 @@ const {
 } = require('./supplier.service')
 const { supplierSchema } = require('../Validation/validation')
 const fs = require('fs').promises
+const path = require('path')
 
 const router = express.Router()
+const uploadFolderPath = 'images/supplier'
+fs.mkdir(path.resolve(uploadFolderPath), { recursive: true })
+  .then(() => console.log(`'${uploadFolderPath}' folder is ready`))
+  .catch((err) => console.error(`Error creating '${uploadFolderPath}' folder: ${err.message}`))
 
 const fileStorage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, 'images/supplier')
+    cb(null, uploadFolderPath)
   },
   filename: (req, file, cb) => {
     cb(null, new Date().getTime() + '-' + file.originalname)

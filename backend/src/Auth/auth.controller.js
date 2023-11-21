@@ -25,7 +25,7 @@ router.post('/login', async (req, res) => {
       id: user.id,
       username: user.username,
       staffId: user.staffId,
-      positionId: user.staff.positionId
+      positionId: user.user.staff.positionId
     }
     const token = createToken(payload)
     const refreshtoken = jwt.sign(payload, process.env.SECRET_SERVER, { expiresIn: '7d' })
@@ -41,7 +41,8 @@ router.post('/login', async (req, res) => {
     })
     res.json({
       message: 'Login successful',
-      user,
+      user: user.user,
+      privilege: user.privilege,
       token,
       refreshtoken
     })

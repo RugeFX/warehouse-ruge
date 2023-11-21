@@ -14,6 +14,7 @@ const PORT = process.env.PORT
 
 app.use(express.json())
 app.use('/images/supplier', express.static(path.join(__dirname, '../images/supplier')))
+app.use('/images/staff', express.static(path.join(__dirname, '../images/staff')))
 app.use(cors())
 
 app.use('/auth', AuthController)

@@ -11,12 +11,18 @@ const {
 } = require('./staff.service')
 const { staffSchema } = require('../Validation/validation')
 const fs = require('fs').promises
+const path = require('path')
 
 const router = express.Router()
 
+const uploadFolderPath = 'images/staff'
+fs.mkdir(path.resolve(uploadFolderPath), { recursive: true })
+  .then(() => console.log(`'${uploadFolderPath}' folder is ready`))
+  .catch((err) => console.error(`Error creating '${uploadFolderPath}' folder: ${err.message}`))
+
 const fileStorage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, 'images/staff')
+    cb(null, uploadFolderPath)
   },
   filename: (req, file, cb) => {
     cb(null, new Date().getTime() + '-' + file.originalname)

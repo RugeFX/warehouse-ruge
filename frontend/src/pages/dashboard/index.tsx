@@ -11,6 +11,26 @@ import { RecentSales } from "./components/RecentSales";
 
 export default function DashboardPage() {
   return (
+    <div className="flex-col md:flex">
+      <div className="border-b">
+        <div className="flex h-16 items-center px-4">
+          <MainNav className="mx-6" />
+          <div className="ml-auto flex items-center space-x-4">
+            <UserNav />
+          </div>
+        </div>
+      </div>
+      <div className="flex-1 space-y-4 p-8 pt-6">
+        <div className="flex items-center justify-between space-y-2">
+          <h2 className="text-3xl font-bold tracking-tight">Dashboard</h2>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function OldDashboardPage() {
+  return (
     <>
       <div className="flex-col md:flex">
         <div className="border-b">
@@ -34,9 +54,7 @@ export default function DashboardPage() {
           <Tabs defaultValue="overview" className="space-y-4">
             <TabsList>
               <TabsTrigger value="overview">Overview</TabsTrigger>
-              <TabsTrigger value="analytics" disabled>
-                Analytics
-              </TabsTrigger>
+              <TabsTrigger value="analytics">Analytics</TabsTrigger>
               <TabsTrigger value="reports" disabled>
                 Reports
               </TabsTrigger>
@@ -153,6 +171,9 @@ export default function DashboardPage() {
                   </CardContent>
                 </Card>
               </div>
+            </TabsContent>
+            <TabsContent value="analytics" className="space-y-4">
+              <h1>segs</h1>
             </TabsContent>
           </Tabs>
         </div>

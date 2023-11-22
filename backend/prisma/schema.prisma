@@ -86,6 +86,21 @@ model User {
   staff    Staff  @relation(fields: [staffId], references: [id])
 }
 
+model Category {
+  id           Int      @id @default(autoincrement())
+  itemType     String   
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Unit {
+  id           Int    @id @default(autoincrement())
+  unitName     String
+  shortName    String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
 model RefreshToken {
   id       Int      @id @default(autoincrement())
   token    String   @unique

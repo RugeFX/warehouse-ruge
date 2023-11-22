@@ -1,4 +1,4 @@
-const { firstWhereUsername, firstWhereRefreshToken, deleteToken, createUser, getMenu } = require('./auth.repository')
+const { firstWhereUsername, firstWhereRefreshToken, deleteToken, createUser, getMenu, updateUser, firstWhereId } = require('./auth.repository')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 
@@ -34,10 +34,26 @@ const creatingUser = async (username, password, staffId) => {
   return await createUser(username, password, staffId)
 }
 
+const updatingUser = async (id, username, oldPassword, newPassword) => {
+  const user = await firstWhereId(id)
+  if (newPassword === '') {
+    const newUser = await updateUser(id, { username })
+    return newUser
+  } else {
+    const comparePassword = await bcrypt.compare(oldPassword, user.password)
+    if (!comparePassword) {
+      throw new Error('Password is incorrect !')
+    }
+    const newUser = await updateUser(id, { username, password: newPassword })
+    return newUser
+  }
+}
+
 module.exports = {
   getUser,
   getRefreshToken,
   createToken,
   deleteRefreshToken,
-  creatingUser
+  creatingUser,
+  updatingUser
 }

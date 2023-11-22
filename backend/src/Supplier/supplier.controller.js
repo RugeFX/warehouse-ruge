@@ -8,7 +8,7 @@ const {
   updateSupplier,
   deleteSupplier
 } = require('./supplier.service')
-const { supplierSchema } = require('../Validation/validation')
+const { supplierSchema, updateSupplierSchema } = require('../Validation/validation')
 const fs = require('fs').promises
 const path = require('path')
 
@@ -94,37 +94,36 @@ router.post('/', async (req, res) => {
 router.put('/:id', async (req, res) => {
   const id = Number(req.params.id)
   const { name, registerDate, address, phone, information } = req.body
-  const imagepath = req.file.path
+  const imagepath = req.file ? req.file.path : null
   try {
-    await supplierSchema.validateAsync({
+    await updateSupplierSchema.validateAsync({
       name,
       registerDate,
       address,
       phone,
-      image: imagepath,
       information
     })
     const supplier = await getSupplierById(id)
-
-    const { image } = supplier
-    await fs.unlink(image)
+    if (imagepath) {
+      await fs.unlink(supplier.image)
+    }
     const newData = await updateSupplier(
       id,
-      name,
-      registerDate,
-      address,
-      phone,
-      imagepath,
-      information
+      name || supplier.name,
+      registerDate || supplier.registerDate,
+      address || supplier.address,
+      phone || supplier.phone,
+      imagepath || supplier.image,
+      information || supplier.information
     )
     return res.status(200).json({
-      message: 'Success Update Staff Data',
+      message: 'Success Update Supplier Data',
       staff: newData
     })
   } catch (error) {
     if (error.code === 'P2025') {
       return res.status(400).json({
-        error: 'No staff found'
+        error: 'No Supplier found'
       })
     }
     if (error.code === 'P2002' && error.meta.target.includes('name')) {
@@ -145,9 +144,9 @@ router.delete('/:id', async (req, res) => {
 
     const { image } = supplier
 
-    await deleteSupplier(id)
-
     await fs.unlink(image)
+
+    await deleteSupplier(id)
 
     return res.status(200).json({
       message: 'Success Delete Supplier Data'

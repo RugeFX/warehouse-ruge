@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 
 const getUser = async (username, password) => {
-  const user = await firstWhereUsername(username)
+  const user = await firstWhereUsername(username, true)
   if (user === null) {
     throw new Error('User not found')
   }
@@ -11,8 +11,16 @@ const getUser = async (username, password) => {
   if (comparePassword === false) {
     throw new Error('Password is incorrect !')
   }
-  const privilege = await getMenu(user.staff.position.id)
+  const privilege = await getMenu(user.staff.positionId)
   return { user, privilege }
+}
+
+const getUserId = async (id) => {
+  const user = await firstWhereId(id, false)
+  if (user === null) {
+    throw new Error('User not found')
+  }
+  return user
 }
 
 const getRefreshToken = async (refreshToken) => {
@@ -34,19 +42,16 @@ const creatingUser = async (username, password, staffId) => {
   return await createUser(username, password, staffId)
 }
 
-const updatingUser = async (id, username, oldPassword, newPassword) => {
-  const user = await firstWhereId(id)
-  if (newPassword === '') {
-    const newUser = await updateUser(id, { username })
-    return newUser
-  } else {
-    const comparePassword = await bcrypt.compare(oldPassword, user.password)
+const updatingUser = async (id, payload) => {
+  const user = await firstWhereId(id, true)
+  if (payload.oldPassword) {
+    const comparePassword = await bcrypt.compare(payload.oldPassword, user.password)
     if (!comparePassword) {
       throw new Error('Password is incorrect !')
     }
-    const newUser = await updateUser(id, { username, password: newPassword })
-    return newUser
   }
+  const newUser = await updateUser(id, { username: payload.username, password: payload.newPassword })
+  return newUser
 }
 
 module.exports = {
@@ -55,5 +60,6 @@ module.exports = {
   createToken,
   deleteRefreshToken,
   creatingUser,
-  updatingUser
+  updatingUser,
+  getUserId
 }

@@ -7,7 +7,8 @@ const {
   createToken,
   deleteRefreshToken,
   creatingUser,
-  updatingUser
+  updatingUser,
+  getUserId
 } = require('./auth.service')
 const jwt = require('jsonwebtoken')
 const prisma = require('../Db')
@@ -23,9 +24,9 @@ router.post('/login', async (req, res) => {
     await loginSchema.validateAsync({ username, password })
     const user = await getUser(username, password)
     const payload = {
-      id: user.id,
-      username: user.username,
-      staffId: user.staffId,
+      id: user.user.id,
+      username: user.user.username,
+      staffId: user.user.staffId,
       positionId: user.user.staff.positionId
     }
     const token = createToken(payload)
@@ -42,10 +43,23 @@ router.post('/login', async (req, res) => {
     })
     res.json({
       message: 'Login successful',
-      user: user.user,
       privilege: user.privilege,
       token,
       refreshtoken
+    })
+  } catch (error) {
+    res.status(400).json({
+      error: error.message || 'Unexpected error'
+    })
+  }
+})
+
+router.get('/me', jwtValidation, async (req, res) => {
+  try {
+    const { id } = req.user
+    const user = await getUserId(id)
+    return res.status(200).json({
+      userInfo: user
     })
   } catch (error) {
     res.status(400).json({
@@ -73,7 +87,6 @@ router.post('/token', async (req, res) => {
       token
     })
   } catch (error) {
-    console.log(error)
     res.status(400).json({
       error: error.message || 'Unexpected error'
     })
@@ -130,12 +143,12 @@ router.post('/register', jwtValidation, async (req, res) => {
 router.put('/:id', jwtValidation, async (req, res) => {
   try {
     const id = Number(req.params.id)
-    const { username, oldPassword, newPassword } = req.body
+    const { username, oldPassword } = req.body
     await updateUserSchema.validateAsync({ username, oldPassword })
-    const newUser = await updatingUser(id, username, oldPassword, newPassword)
+    const newUser = await updatingUser(id, req.body)
 
     return res.status(200).json({
-      message: 'successful create new user',
+      message: 'successful update new user',
       user: newUser
     })
   } catch (error) {

@@ -1,4 +1,4 @@
-import type { Staff, User } from "./user";
+import type { MenuGroup, Staff, User } from "./user";
 
 export type BaseResponse = {
   message: string;
@@ -6,6 +6,7 @@ export type BaseResponse = {
 
 export type LoginResponse = BaseResponse & {
   user: User;
+  privilege: MenuGroup[];
   token: string;
   refreshtoken: string;
 };

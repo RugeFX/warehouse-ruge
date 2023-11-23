@@ -17,6 +17,7 @@ export const useStore = create<CountSlice & AuthSlice & ThemeSlice>()(
         accessToken: state.accessToken,
         refreshToken: state.refreshToken,
         userData: state.userData,
+        privileges: state.privileges,
         theme: state.theme,
       }),
     }
@@ -25,6 +26,7 @@ export const useStore = create<CountSlice & AuthSlice & ThemeSlice>()(
 // Auth store hooks
 export const useAccessToken = () => useStore((state) => state.accessToken);
 export const useUserData = () => useStore((state) => state.userData);
+export const usePrivileges = () => useStore((state) => state.privileges);
 export const useRefreshToken = () => useStore((state) => state.refreshToken);
 export const useAuthActions = () => useStore((state) => state.actions);
 

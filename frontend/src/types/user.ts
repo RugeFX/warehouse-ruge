@@ -20,8 +20,8 @@ export type Position = {
   name: string;
   createdAt: string;
   updatedAt: string;
-  staff: Staff[];
-  privilege: Privilege[];
+  // staff: Staff[];
+  // privilege: Privilege[];
 };
 
 export type MenuGroup = {
@@ -56,7 +56,6 @@ export type Privilege = {
   createdAt: string;
   updatedAt: string;
   menuItem: MenuItem;
-  position: Position;
 };
 
 export type Staff = {
@@ -70,5 +69,4 @@ export type Staff = {
   createdAt: string;
   updatedAt: string;
   position: Position;
-  user?: User;
 };

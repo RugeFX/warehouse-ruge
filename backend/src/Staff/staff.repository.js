@@ -3,6 +3,7 @@ const prisma = require('../Db')
 const findAll = async () => {
   const staff = await prisma.staff.findMany({
     include: {
+      user: true,
       position: true
     }
   })
@@ -15,6 +16,7 @@ const findById = async (id) => {
       id
     },
     include: {
+      user: true,
       position: true
     }
   })

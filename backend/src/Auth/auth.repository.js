@@ -21,9 +21,6 @@ const firstWhereId = async (id, password) => {
     where: {
       id
     },
-    include: {
-      staff: true
-    },
     select: {
       id: true,
       username: true,

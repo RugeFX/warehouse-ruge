@@ -3,50 +3,22 @@ const multer = require('multer')
 // const jwt = require('jsonwebtoken')
 const jwtValidation = require('../Middleware/jwtValidation')
 const {
-  getAllStaff,
-  createStaff,
-  getStaffById,
-  updateStaff,
-  deleteStaff
-} = require('./staff.service')
-const { staffSchema, updateStaffSchema } = require('../Validation/validation')
-const fs = require('fs').promises
-const path = require('path')
+  getAllUnit,
+  createUnit,
+  getUnitById,
+  updateUnit,
+  deleteUnit
+} = require('./unit.service')
+const { unitSchema, updateUnitSchema } = require('../Validation/validation')
 
 const router = express.Router()
 
-const uploadFolderPath = 'images/staff'
-fs.mkdir(path.resolve(uploadFolderPath), { recursive: true })
-  .then(() => console.log(`'${uploadFolderPath}' folder is ready`))
-  .catch((err) => console.error(`Error creating '${uploadFolderPath}' folder: ${err.message}`))
-
-const fileStorage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, uploadFolderPath)
-  },
-  filename: (req, file, cb) => {
-    cb(null, new Date().getTime() + '-' + file.originalname)
-  }
-})
-
-const fileFilter = (req, file, cb) => {
-  if (
-    file.mimetype === 'image/png' ||
-    file.mimetype === 'image/jpg' ||
-    file.mimetype === 'image/jpeg'
-  ) {
-    cb(null, true)
-  } else {
-    cb(null, false)
-  }
-}
-
-router.use(multer({ storage: fileStorage, fileFilter }).single('image'))
+router.use(multer().none())
 router.use(jwtValidation)
 
 router.get('/', async (req, res) => {
   try {
-    const staff = await getAllStaff()
+    const staff = await getAllUnit()
     return res.status(200).json({
       data: staff
     })
@@ -60,7 +32,7 @@ router.get('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
   const id = Number(req.params.id)
   try {
-    const staff = await getStaffById(id)
+    const staff = await getUnitById(id)
     return res.status(200).json({
       data: staff
     })
@@ -71,12 +43,11 @@ router.get('/:id', async (req, res) => {
   }
 })
 router.post('/', async (req, res) => {
-  const { name, registerDate, address, phone, positionId } = req.body
-  const image = req.file.path
+  const { unitName, shortName } = req.body
 
   try {
-    await staffSchema.validateAsync({ name, registerDate, address, phone, image, positionId })
-    const newData = await createStaff(name, registerDate, address, phone, image, positionId)
+    await unitSchema.validateAsync({ unitName, shortName })
+    const newData = await createUnit(req.body)
     return res.status(200).json({
       message: 'Success Create new Staff"',
       staff: newData
@@ -95,30 +66,17 @@ router.post('/', async (req, res) => {
 
 router.put('/:id', async (req, res) => {
   const id = Number(req.params.id)
-  const { name, registerDate, address, phone, positionId } = req.body
-  const imagepath = req.file ? req.file.path : null
+  const { unitName, shortName } = req.body
 
   try {
-    await updateStaffSchema.validateAsync({
-      name,
-      registerDate,
-      address,
-      phone,
-      positionId
+    await updateUnitSchema.validateAsync({
+      unitName,
+      shortName
     })
-    const staff = await getStaffById(id)
 
-    if (imagepath) {
-      await fs.unlink(staff.image)
-    }
-    const newData = await updateStaff(
+    const newData = await updateUnit(
       id,
-      name || staff.name,
-      registerDate || staff.registerDate,
-      address || staff.address,
-      phone || staff.phone,
-      imagepath || staff.image,
-      positionId || staff.positionId
+      req.body
     )
     return res.status(200).json({
       message: 'Success Update Staff Data',
@@ -144,11 +102,7 @@ router.put('/:id', async (req, res) => {
 router.delete('/:id', async (req, res) => {
   const id = Number(req.params.id)
   try {
-    const supplier = await getStaffById(id)
-
-    const { image } = supplier
-    await fs.unlink(image)
-    await deleteStaff(id)
+    await deleteUnit(id)
 
     return res.status(200).json({
       message: 'Success Delete Staff Data'

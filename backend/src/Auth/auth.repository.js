@@ -6,12 +6,12 @@ const firstWhereUsername = async (username) => {
     where: {
       username
     },
-    include: {
-      staff: {
-        include: {
-          position: true
-        }
-      }
+    select: {
+      id: true,
+      username: true,
+      staffId: true,
+      staff: true,
+      password: false
     }
   })
   return user
@@ -20,13 +20,6 @@ const firstWhereId = async (id) => {
   const user = await prisma.user.findUnique({
     where: {
       id
-    },
-    include: {
-      staff: {
-        include: {
-          position: true
-        }
-      }
     }
   })
   return user
@@ -55,6 +48,13 @@ const createUser = async (username, password, staffId) => {
       username,
       password,
       staffId
+    },
+    select: {
+      id: true,
+      username: true,
+      staffId: true,
+      staff: true,
+      password: false
     }
   })
   return newUser
@@ -68,7 +68,14 @@ const updateUser = async (id, payload) => {
     where: {
       id
     },
-    data: payload
+    data: payload,
+    select: {
+      id: true,
+      username: true,
+      staffId: true,
+      staff: true,
+      password: false
+    }
   })
   return newUser
 }

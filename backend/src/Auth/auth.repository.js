@@ -1,7 +1,7 @@
 const prisma = require('../Db')
 const bcrypt = require('bcrypt')
 
-const firstWhereUsername = async (username) => {
+const firstWhereUsername = async (username, password) => {
   const user = await prisma.user.findUnique({
     where: {
       username
@@ -11,15 +11,22 @@ const firstWhereUsername = async (username) => {
       username: true,
       staffId: true,
       staff: true,
-      password: false
+      password: password === true
     }
   })
   return user
 }
-const firstWhereId = async (id) => {
+const firstWhereId = async (id, password) => {
   const user = await prisma.user.findUnique({
     where: {
       id
+    },
+    select: {
+      id: true,
+      username: true,
+      staffId: true,
+      staff: true,
+      password: password === true
     }
   })
   return user

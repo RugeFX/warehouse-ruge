@@ -2,19 +2,18 @@ const express = require('express')
 const multer = require('multer')
 const jwtValidation = require('../Middleware/jwtValidation')
 const {
-  getAllSupplier,
-  createSupplier,
-  getSupplierById,
-  updateSupplier,
-  deleteSupplier
-} = require('./supplier.service')
-const { supplierSchema, updateSupplierSchema } = require('../Validation/validation')
+  getAllProduct,
+  createProduct,
+  getProductById,
+  updateProduct,
+  deleteProduct
+} = require('./product.service')
+const { productSchema, updateProductSchema } = require('../Validation/validation')
 const fs = require('fs').promises
 const path = require('path')
 
 const router = express.Router()
-
-const uploadFolderPath = 'images/supplier'
+const uploadFolderPath = 'images/product'
 fs.mkdir(path.resolve(uploadFolderPath), { recursive: true })
   .then(() => console.log(`'${uploadFolderPath}' folder is ready`))
   .catch((err) => console.error(`Error creating '${uploadFolderPath}' folder: ${err.message}`))
@@ -45,7 +44,7 @@ router.use(jwtValidation)
 
 router.get('/', async (req, res) => {
   try {
-    const staff = await getAllSupplier()
+    const staff = await getAllProduct()
     return res.status(200).json({
       data: staff
     })
@@ -59,7 +58,7 @@ router.get('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
   const id = Number(req.params.id)
   try {
-    const staff = await getSupplierById(id)
+    const staff = await getProductById(id)
     return res.status(200).json({
       data: staff
     })
@@ -70,12 +69,12 @@ router.get('/:id', async (req, res) => {
   }
 })
 router.post('/', async (req, res) => {
-  const { name, registerDate, address, phone, information } = req.body
-  console.log(req.file)
+  const { name, stock, netPrice, unitId, categoryId, supplierId, information } = req.body
   const image = req.file.path
+
   try {
-    await supplierSchema.validateAsync({ name, registerDate, address, phone, image, information })
-    const newData = await createSupplier(name, registerDate, address, phone, image, information)
+    await productSchema.validateAsync({ name, stock, netPrice, unitId, categoryId, supplierId, information, image })
+    const newData = await createProduct(name, Number(stock), Number(netPrice), Number(unitId), Number(categoryId), Number(supplierId), information, image)
     return res.status(200).json({
       message: 'Success Create new Supplier',
       staff: newData
@@ -94,28 +93,28 @@ router.post('/', async (req, res) => {
 
 router.put('/:id', async (req, res) => {
   const id = Number(req.params.id)
-  const { name, registerDate, address, phone, information } = req.body
+  const { name, stock, netPrice, unitId, categoryId, supplierId, information } = req.body
   const imagepath = req.file ? req.file.path : null
   try {
-    await updateSupplierSchema.validateAsync({
-      name,
-      registerDate,
-      address,
-      phone,
-      information
+    await updateProductSchema.validateAsync({
+      name, stock, netPrice, unitId, categoryId, supplierId, information
     })
-    const supplier = await getSupplierById(id)
+    const product = await getProductById(id)
     if (imagepath) {
-      await fs.unlink(supplier.image)
+      await fs.unlink(product.image)
     }
-    const newData = await updateSupplier(
+    const newData = await updateProduct(
       id,
-      name || supplier.name,
-      registerDate || supplier.registerDate,
-      address || supplier.address,
-      phone || supplier.phone,
-      imagepath || supplier.image,
-      information || supplier.information
+      {
+        name: name || product.name,
+        stock: Number(stock) || product.stock,
+        netPrice: Number(netPrice) || product.netPrice,
+        unitId: Number(unitId) || product.unitId,
+        categoryId: Number(categoryId) || product.categoryId,
+        supplierId: Number(supplierId) || product.supplierId,
+        image: imagepath || product.image,
+        information: information || product.information
+      }
     )
     return res.status(200).json({
       message: 'Success Update Supplier Data',
@@ -141,13 +140,13 @@ router.put('/:id', async (req, res) => {
 router.delete('/:id', async (req, res) => {
   const id = Number(req.params.id)
   try {
-    const supplier = await getSupplierById(id)
+    const supplier = await getProductById(id)
 
     const { image } = supplier
 
     await fs.unlink(image)
 
-    await deleteSupplier(id)
+    await deleteProduct(id)
 
     return res.status(200).json({
       message: 'Success Delete Supplier Data'

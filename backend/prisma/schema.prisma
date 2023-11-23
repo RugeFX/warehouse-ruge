@@ -74,9 +74,11 @@ model Supplier {
   phone        String
   image        String
   information  String
+  product      Product[]
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 }
+
 
 model User {
   id       Int    @id @default(autoincrement())
@@ -89,6 +91,7 @@ model User {
 model Category {
   id           Int      @id @default(autoincrement())
   itemType     String   
+  product      Product[]
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 }
@@ -97,10 +100,28 @@ model Unit {
   id           Int    @id @default(autoincrement())
   unitName     String
   shortName    String
+  product      Product[]
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 }
 
+model Product {
+  id           Int      @id @default(autoincrement())
+  kodeProduct  String   @default(uuid())
+  name         String   @unique
+  stock        Int
+  netPrice     Int
+  image        String
+  information  String
+  unitId       Int
+  unit         Unit     @relation(fields: [unitId], references: [id])
+  categoryId   Int
+  category     Category @relation(fields: [categoryId], references: [id])
+  supplierId   Int
+  supplier     Supplier @relation(fields: [supplierId], references: [id])
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
 model RefreshToken {
   id       Int      @id @default(autoincrement())
   token    String   @unique

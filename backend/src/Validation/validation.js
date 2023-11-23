@@ -134,6 +134,62 @@ const updateSupplierSchema = Joi.object({
   })
 })
 
+const productSchema = Joi.object({
+  name: Joi.string().required().messages({
+    'string.base': 'Name must a string.',
+    'string.empty': 'Name is required.'
+  }),
+  stock: Joi.number().required().messages({
+    'number.base': 'Stock must a Number.',
+    'number.empty': 'Stock is required.'
+  }),
+  netPrice: Joi.number().required().messages({
+    'number.base': 'netPrice must a Number.',
+    'number.empty': 'netPrice is required.'
+  }),
+  unitId: Joi.number().required().messages({
+    'number.base': 'unitId must a Number.',
+    'number.empty': 'unitId is required.'
+  }),
+  categoryId: Joi.number().required().messages({
+    'number.base': 'categoryId must a Number.',
+    'number.empty': 'categoryId is required.'
+  }),
+  supplierId: Joi.number().required().messages({
+    'number.base': 'supplierId must a Number.',
+    'number.empty': 'supplierId is required.'
+  }),
+  image: Joi.string().required().messages({
+    'string.empty': 'image is required.'
+  }),
+  information: Joi.string().messages({
+    'string.base': 'Information must be a string.'
+  })
+})
+const updateProductSchema = Joi.object({
+  name: Joi.string().messages({
+    'string.base': 'Name must a string.'
+  }),
+  stock: Joi.number().messages({
+    'number.base': 'Stock must a Number.'
+  }),
+  netPrice: Joi.number().messages({
+    'number.base': 'netPrice must a Number.'
+  }),
+  unitId: Joi.number().messages({
+    'number.base': 'unitId must a Number.'
+  }),
+  categoryId: Joi.number().messages({
+    'number.base': 'categoryId must a Number.'
+  }),
+  supplierId: Joi.number().messages({
+    'number.base': 'supplierId must a Number.'
+  }),
+  information: Joi.string().messages({
+    'string.base': 'Information must be a string.'
+  })
+})
+
 const positionSchema = Joi.object({
   name: Joi.string().required().messages({
     'string.base': 'Name must a string.',
@@ -190,5 +246,7 @@ module.exports = {
   unitSchema,
   updateUnitSchema,
   categorySchema,
-  updateCategorySchema
+  updateCategorySchema,
+  productSchema,
+  updateProductSchema
 }

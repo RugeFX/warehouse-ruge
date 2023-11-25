@@ -1,11 +1,12 @@
 import apiClient from "@/api/apiClient";
+import { useStore } from "@/store";
 import type { LoginPayload, LogoutPayload } from "@/types/auth";
-import type { BaseResponse, LoginResponse, RefreshResponse } from "@/types/response";
-import type { PersistedInfo } from "@/types/user";
-
-const getPersistedInfo = () => {
-  return JSON.parse(localStorage.getItem("user-info")!) as PersistedInfo;
-};
+import type {
+  BaseResponse,
+  LoginResponse,
+  MyProfileResponse,
+  RefreshResponse,
+} from "@/types/response";
 
 export const login = async (payload: LoginPayload) => {
   const res = await apiClient.post<LoginResponse>("auth/login", payload);
@@ -19,30 +20,23 @@ export const logout = async (payload: LogoutPayload) => {
   return res.data;
 };
 
+export const getProfileInfo = async () => {
+  const res = await apiClient.get<MyProfileResponse>("auth/me");
+  return res.data;
+};
+
 export const refreshAccessToken = async () => {
-  const userInfo = getLocalUserInfo();
+  const refreshToken = useStore.getState().refreshToken;
   const res = await apiClient.post<RefreshResponse>("auth/token", {
-    refreshToken: userInfo?.refreshToken,
+    refreshToken,
   });
   return res.data;
 };
 
-export const getLocalUserInfo = () => {
-  return getPersistedInfo().state;
-};
-
 export const updateLocalAccessToken = (accessToken: string) => {
-  const currentInfo = getPersistedInfo();
-  localStorage.setItem(
-    "user-info",
-    JSON.stringify({ ...currentInfo, state: { ...currentInfo.state, accessToken } })
-  );
+  useStore.setState({ accessToken });
 };
 
 export const updateLocalRefreshToken = (refreshToken: string) => {
-  const currentInfo = getPersistedInfo();
-  localStorage.setItem(
-    "user-info",
-    JSON.stringify({ ...currentInfo, state: { ...currentInfo.state, refreshToken } })
-  );
+  useStore.setState({ refreshToken });
 };

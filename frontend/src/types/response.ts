@@ -18,3 +18,11 @@ export type RefreshResponse = BaseResponse & {
 export type ProfileUpdateResponse = BaseResponse & {
   staff: Staff;
 };
+
+export type UserUpdateResponse = BaseResponse & {
+  user: Omit<User, "staff">;
+};
+
+export type MyProfileResponse = {
+  userInfo: User;
+};

@@ -5,11 +5,9 @@ const findAll = async () => {
   return unit
 }
 
-const findById = async (id) => {
+const findOrFail = async (where) => {
   const unit = await prisma.unit.findUniqueOrThrow({
-    where: {
-      id
-    }
+    where
   })
   return unit
 }
@@ -39,7 +37,7 @@ const deleteData = async (id) => {
 module.exports = {
   findAll,
   createData,
-  findById,
+  findOrFail,
   updateData,
   deleteData
 }

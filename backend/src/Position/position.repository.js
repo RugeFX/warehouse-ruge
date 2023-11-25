@@ -18,11 +18,9 @@ const findAllMenuItem = async () => {
   return privilege
 }
 
-const findById = async (id) => {
+const findOrfail = async (where) => {
   const position = await prisma.position.findUniqueOrThrow({
-    where: {
-      id
-    },
+    where,
     include: {
       privilege: true
     }
@@ -73,7 +71,7 @@ const deleteData = async (id) => {
 module.exports = {
   findAll,
   createData,
-  findById,
+  findOrfail,
   updateData,
   deleteData,
   findAllMenuItem,

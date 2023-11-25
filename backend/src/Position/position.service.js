@@ -1,4 +1,4 @@
-const { findAll, createData, findById, updateData, deleteData, findAllMenuItem, createDataPrivilege, updateDataPrivilege } = require('./position.repository')
+const { findAll, createData, findOrfail, updateData, deleteData, findAllMenuItem, createDataPrivilege, updateDataPrivilege } = require('./position.repository')
 
 const getAllPosition = async () => {
   const position = await findAll()
@@ -9,7 +9,7 @@ const getAllMenuItem = async () => {
   return menuItem
 }
 const getPositionById = async (id) => {
-  const position = await findById(id)
+  const position = await findOrfail({ id })
   return position
 }
 const createPosition = async (name) => {

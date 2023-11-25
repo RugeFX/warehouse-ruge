@@ -1,9 +1,9 @@
-const { firstWhereUsername, firstWhereRefreshToken, deleteToken, createUser, getMenu, updateUser, firstWhereId } = require('./auth.repository')
+const { firstWhereRefreshToken, deleteToken, createUser, getMenu, updateUser, firstWhere } = require('./auth.repository')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 
 const getUser = async (username, password) => {
-  const user = await firstWhereUsername(username, true)
+  const user = await firstWhere({ username }, true)
   if (user === null) {
     throw new Error('User not found')
   }
@@ -16,7 +16,7 @@ const getUser = async (username, password) => {
 }
 
 const getUserId = async (id) => {
-  const user = await firstWhereId(id, false)
+  const user = await firstWhere({ id }, false)
   if (user === null) {
     throw new Error('User not found')
   }
@@ -43,7 +43,7 @@ const creatingUser = async (username, password, staffId) => {
 }
 
 const updatingUser = async (id, payload) => {
-  const user = await firstWhereId(id, true)
+  const user = await firstWhere({ id }, true)
   if (payload.oldPassword) {
     const comparePassword = await bcrypt.compare(payload.oldPassword, user.password)
     if (!comparePassword) {

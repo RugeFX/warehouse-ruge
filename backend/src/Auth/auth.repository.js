@@ -1,11 +1,9 @@
 const prisma = require('../Db')
 const bcrypt = require('bcrypt')
 
-const firstWhereUsername = async (username, password) => {
+const firstWhere = async (where, password) => {
   const user = await prisma.user.findUnique({
-    where: {
-      username
-    },
+    where,
     select: {
       id: true,
       username: true,
@@ -16,21 +14,7 @@ const firstWhereUsername = async (username, password) => {
   })
   return user
 }
-const firstWhereId = async (id, password) => {
-  const user = await prisma.user.findUnique({
-    where: {
-      id
-    },
-    select: {
-      id: true,
-      username: true,
-      staffId: true,
-      staff: true,
-      password: password === true
-    }
-  })
-  return user
-}
+
 const firstWhereRefreshToken = async (token) => {
   const refreshToken = await prisma.refreshToken.findUnique({
     where: {
@@ -88,7 +72,6 @@ const updateUser = async (id, payload) => {
 }
 
 const getMenu = async (positionId) => {
-  console.log(positionId)
   const menus = await prisma.menuGroup.findMany({
     include: {
       menuItem: {
@@ -107,11 +90,11 @@ const getMenu = async (positionId) => {
 }
 
 module.exports = {
-  firstWhereUsername,
+  firstWhere,
   firstWhereRefreshToken,
   deleteToken,
   createUser,
   getMenu,
-  updateUser,
-  firstWhereId
+  updateUser
+  // firstWhereId
 }

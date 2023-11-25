@@ -233,6 +233,64 @@ const updateCategorySchema = Joi.object({
   })
 })
 
+const restockSchema = Joi.object({
+  restockDate: Joi.string().required().custom((value, helpers) => {
+    const parsedDate = moment(value, 'YYYY-MM-DD HH:mm', true)
+    if (!parsedDate.isValid()) {
+      return helpers.message('Invalid date format. Please use Year-Month-Date hour:minute .')
+    }
+  }, 'Date formatting'),
+  supplierId: Joi.number().required().messages({
+    'number.base': 'supplierId must be a Number.',
+    'number.empty': 'supplierId is required.'
+  }),
+  totalSpend: Joi.number().required().messages({
+    'number.base': 'totalSpend must be a Number.',
+    'number.empty': 'totalSpend is required.'
+  }),
+  products: Joi.array().items(
+    Joi.object({
+      id: Joi.number().required().messages({
+        'number.base': 'productId must be a Number.',
+        'number.empty': 'productId is required.'
+      }),
+      quantity: Joi.number().required().messages({
+        'number.base': 'quantity must be a Number.',
+        'number.empty': 'quantity is required.'
+      })
+    })
+  ).required().messages({
+    'array.base': 'products must be an array.',
+    'array.empty': 'products is required.'
+  })
+})
+
+const updateRestcokSchema = Joi.object({
+  restockDate: Joi.string().custom((value, helpers) => {
+    const parsedDate = moment(value, 'YYYY-MM-DD HH:mm', true)
+    if (!parsedDate.isValid()) {
+      return helpers.message('Invalid date format. Please use Year-Month-Date hour:minute .')
+    }
+  }, 'Date formatting'),
+  supplierId: Joi.number().messages({
+    'number.base': 'supplierId must a Number.'
+  }),
+  totalSpend: Joi.number().messages({
+    'number.base': 'totalSpend must a Number.'
+  }),
+  products: Joi.array().items(
+    Joi.object({
+      id: Joi.number().messages({
+        'number.base': 'productId must a Number.'
+      }),
+      quantity: Joi.number().messages({
+        'number.base': 'quantity must a Number.'
+      })
+    })
+  ).messages({
+    'array.base': 'products must an array.'
+  })
+})
 module.exports = {
   loginSchema,
   userSchema,
@@ -248,5 +306,7 @@ module.exports = {
   categorySchema,
   updateCategorySchema,
   productSchema,
-  updateProductSchema
+  updateProductSchema,
+  restockSchema,
+  updateRestcokSchema
 }

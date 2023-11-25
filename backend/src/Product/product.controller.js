@@ -76,7 +76,7 @@ router.post('/', async (req, res) => {
     await productSchema.validateAsync({ name, stock, netPrice, unitId, categoryId, supplierId, information, image })
     const newData = await createProduct(name, Number(stock), Number(netPrice), Number(unitId), Number(categoryId), Number(supplierId), information, image)
     return res.status(200).json({
-      message: 'Success Create new Supplier',
+      message: 'Success Create new Product',
       staff: newData
     })
   } catch (error) {
@@ -117,13 +117,13 @@ router.put('/:id', async (req, res) => {
       }
     )
     return res.status(200).json({
-      message: 'Success Update Supplier Data',
+      message: 'Success Update Product Data',
       staff: newData
     })
   } catch (error) {
     if (error.code === 'P2025') {
       return res.status(400).json({
-        error: 'No Supplier found'
+        error: 'No Product found'
       })
     }
     if (error.code === 'P2002' && error.meta.target.includes('name')) {
@@ -149,12 +149,12 @@ router.delete('/:id', async (req, res) => {
     await deleteProduct(id)
 
     return res.status(200).json({
-      message: 'Success Delete Supplier Data'
+      message: 'Success Delete Product Data'
     })
   } catch (error) {
     if (error.code === 'P2025') {
       return res.status(400).json({
-        error: 'No staff found'
+        error: 'No Product found'
       })
     }
     return res.status(400).json({

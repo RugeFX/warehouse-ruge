@@ -2,6 +2,7 @@ const express = require('express')
 const dotenv = require('dotenv')
 const cors = require('cors')
 const path = require('path')
+const bcrypt = require('bcrypt')
 // controller
 const AuthController = require('./Auth/auth.controller')
 const StaffController = require('./Staff/staff.controller')
@@ -28,6 +29,11 @@ app.use('/supplier', SupplierController)
 app.use('/unit', UnitController)
 app.use('/category', CategoryController)
 app.use('/product', ProductController)
+
+app.get('/pw', async (req, res) => {
+  const pw = await bcrypt.hash('zacky123', 10)
+  return res.json({ pw })
+})
 
 app.listen(PORT, () => {
   console.log(`Server running on port : ${PORT}`)

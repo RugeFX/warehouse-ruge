@@ -96,7 +96,7 @@ router.post('/', async (req, res) => {
 router.put('/:id', async (req, res) => {
   const id = Number(req.params.id)
   const { name, registerDate, address, phone, positionId } = req.body
-  const imagepath = req.file ? req.file.path : null
+  const imagepath = req.file ? req.file.filename : null
 
   try {
     await updateStaffSchema.validateAsync({
@@ -108,8 +108,8 @@ router.put('/:id', async (req, res) => {
     })
     const staff = await getStaffById(id)
 
-    if (imagepath) {
-      await fs.unlink(staff.image)
+    if (imagepath && staff.image && staff.image !== 'null') {
+      await fs.unlink('images/staff/' + staff.image)
     }
     const newData = await updateStaff(
       id,

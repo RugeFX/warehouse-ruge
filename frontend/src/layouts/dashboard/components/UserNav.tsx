@@ -13,6 +13,7 @@ import {
 import useLogout from "@/hooks/query/useLogout";
 import { useRefreshToken, useUserData } from "@/store";
 import { UserIcon } from "lucide-react";
+import { apiAsset } from "@/lib/utils";
 
 export default function UserNav() {
   const navigate = useNavigate();
@@ -37,7 +38,10 @@ export default function UserNav() {
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="relative h-8 w-8 rounded-full">
           <Avatar className="h-8 w-8">
-            <AvatarImage src={userData?.staff.image} alt={userData?.username} />
+            <AvatarImage
+              src={apiAsset(`images/staff/${userData?.staff.image}`)}
+              alt={userData?.username}
+            />
             <AvatarFallback>
               {userData?.username
                 .toUpperCase()

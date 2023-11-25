@@ -1,15 +1,13 @@
 import axios, { type InternalAxiosRequestConfig, type AxiosError } from "axios";
-import { getLocalUserInfo, refreshAccessToken, updateLocalAccessToken } from "@/auth/authService";
+import { refreshAccessToken, updateLocalAccessToken } from "@/auth/authService";
+import { useStore } from "@/store";
 
 const apiClient = axios.create({
   baseURL: import.meta.env.VITE_BASE_API_URL ?? "http://localhost:5000",
-  headers: {
-    "Content-Type": "application/json",
-  },
 });
 
 apiClient.interceptors.request.use((config) => {
-  const token = getLocalUserInfo()?.accessToken;
+  const token = useStore.getState().accessToken;
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }

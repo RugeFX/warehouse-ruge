@@ -15,8 +15,18 @@ export interface AuthSlice {
   };
 }
 
+const initialState: Omit<AuthSlice, "actions"> = {
+  accessToken: undefined,
+  refreshToken: undefined,
+  userData: undefined,
+  privileges: undefined,
+};
+
 export const createAuthSlice: StateCreator<AuthSlice> = (set) => ({
   accessToken: undefined,
+  refreshToken: undefined,
+  userData: undefined,
+  privileges: undefined,
   actions: {
     setAccessToken(accessToken) {
       set(() => ({ accessToken }));
@@ -31,12 +41,7 @@ export const createAuthSlice: StateCreator<AuthSlice> = (set) => ({
       set(() => ({ privileges }));
     },
     clearUserInfo() {
-      set(() => ({
-        accessToken: undefined,
-        refreshToken: undefined,
-        userData: undefined,
-        privileges: undefined,
-      }));
+      set(() => initialState);
     },
   },
 });

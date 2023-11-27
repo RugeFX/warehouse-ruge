@@ -1,32 +1,40 @@
 import { type RouteObject, createBrowserRouter } from "react-router-dom";
-import HomePage from "@/pages/HomePage";
-import LoginPage from "@/pages/login";
-import NotFoundPage from "@/pages/NotFoundPage";
-import TodosPage from "@/pages/todos";
-import DashboardPage from "@/pages/dashboard";
-import AccessTestPage from "@/pages/AccessTestPage";
 import PrivateRoute from "./PrivateRoute";
 import GuestRoute from "./GuestRoute";
-import ProfilePage from "@/pages/profile";
-import DashboardLayout from "@/layouts/dashboard";
+import NotFoundPage from "@/pages/NotFoundPage";
+import HomePage from "@/pages/HomePage";
+import LoginPage from "@/pages/login";
+import ProfilePage, { loader as profileLoader } from "@/pages/profile";
+import DashboardPage from "@/pages/dashboard";
+import AccessTestPage from "@/pages/AccessTestPage";
+import InventoryPage from "@/pages/inventory";
+import AdminPage from "@/pages/admin";
+import DashboardLayout, { loader as dashboardLoader } from "@/layouts/dashboard";
+import type { QueryClient } from "@tanstack/react-query";
 
-const privateRoutes: RouteObject = {
+const privateRoutes = (queryClient: QueryClient): RouteObject => ({
   element: <PrivateRoute />,
   children: [
     {
       element: <DashboardLayout />,
+      loader: dashboardLoader(queryClient),
       children: [
         {
           path: "dashboard",
           element: <DashboardPage />,
         },
         {
-          path: "todos",
-          element: <TodosPage />,
-        },
-        {
           path: "profile",
           element: <ProfilePage />,
+          loader: profileLoader(queryClient),
+        },
+        {
+          path: "inventory",
+          element: <InventoryPage />,
+        },
+        {
+          path: "admin",
+          element: <AdminPage />,
         },
       ],
     },
@@ -35,7 +43,7 @@ const privateRoutes: RouteObject = {
       element: <AccessTestPage />,
     },
   ],
-};
+});
 
 const guestRoutes: RouteObject = {
   element: <GuestRoute />,
@@ -51,11 +59,12 @@ const guestRoutes: RouteObject = {
   ],
 };
 
-export const router = createBrowserRouter([
-  guestRoutes,
-  privateRoutes,
-  {
-    path: "*",
-    element: <NotFoundPage />,
-  },
-]);
+export const router = (queryClient: QueryClient) =>
+  createBrowserRouter([
+    guestRoutes,
+    privateRoutes(queryClient),
+    {
+      path: "*",
+      element: <NotFoundPage />,
+    },
+  ]);

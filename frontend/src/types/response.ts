@@ -26,3 +26,7 @@ export type UserUpdateResponse = BaseResponse & {
 export type MyProfileResponse = {
   userInfo: User;
 };
+
+export type PrivilegeResponse = {
+  privileges: MenuGroup[];
+};

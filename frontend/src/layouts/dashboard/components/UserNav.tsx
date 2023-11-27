@@ -24,12 +24,8 @@ export default function UserNav() {
   const onLogoutClicked = () => {
     if (refreshToken) {
       logoutMutate({ refreshToken })
-        .then(() => {
-          navigate("/");
-        })
-        .catch((err) => {
-          console.error(err);
-        });
+        .then(() => navigate("/"))
+        .catch(console.error);
     }
   };
 
@@ -41,6 +37,7 @@ export default function UserNav() {
             <AvatarImage
               src={apiAsset(`images/staff/${userData?.staff.image}`)}
               alt={userData?.username}
+              className="object-cover"
             />
             <AvatarFallback>
               {userData?.username
@@ -69,7 +66,10 @@ export default function UserNav() {
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild>
-          <button className="w-full focus:bg-red-900" onClick={onLogoutClicked}>
+          <button
+            className="w-full focus:bg-red-500 focus:text-background dark:focus:bg-red-900 dark:focus:text-foreground"
+            onClick={onLogoutClicked}
+          >
             Log out
           </button>
         </DropdownMenuItem>

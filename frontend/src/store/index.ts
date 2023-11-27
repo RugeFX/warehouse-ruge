@@ -17,7 +17,6 @@ export const useStore = create<CountSlice & AuthSlice & ThemeSlice>()(
         accessToken: state.accessToken,
         refreshToken: state.refreshToken,
         userData: state.userData,
-        privileges: state.privileges,
         theme: state.theme,
       }),
     }

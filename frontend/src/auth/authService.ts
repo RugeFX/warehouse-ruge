@@ -5,6 +5,7 @@ import type {
   BaseResponse,
   LoginResponse,
   MyProfileResponse,
+  PrivilegeResponse,
   RefreshResponse,
 } from "@/types/response";
 
@@ -22,6 +23,11 @@ export const logout = async (payload: LogoutPayload) => {
 
 export const getProfileInfo = async () => {
   const res = await apiClient.get<MyProfileResponse>("auth/me");
+  return res.data;
+};
+
+export const getPrivileges = async () => {
+  const res = await apiClient.get<PrivilegeResponse>(`auth/privileges`);
   return res.data;
 };
 

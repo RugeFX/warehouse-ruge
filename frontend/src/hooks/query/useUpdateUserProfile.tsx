@@ -27,14 +27,14 @@ export default function useUpdateUserProfile() {
       };
     }
   >({
-    mutationFn: async ({ id, userPayload, staffPayload }) => {
-      const staffFormData = new FormData();
+    async mutationFn({ id, userPayload, staffPayload }) {
       const userData = {
         ...userPayload,
         password: userPayload.password === "" ? undefined : userPayload.password,
         newPassword: userPayload.newPassword === "" ? undefined : userPayload.newPassword,
       };
 
+      const staffFormData = new FormData();
       staffFormData.append("name", staffPayload.name);
       staffFormData.append("phone", staffPayload.phone);
       staffFormData.append("address", staffPayload.address);
@@ -45,10 +45,10 @@ export default function useUpdateUserProfile() {
       });
       const updateUser = apiClient.put<UserUpdateResponse>(`auth/${id}`, userData);
 
-      const res = await Promise.all([updateStaff, updateUser]);
-      return { staff: res[0].data.staff, user: res[1].data.user };
+      const [staffResponse, userResponse] = await Promise.all([updateStaff, updateUser]);
+      return { staff: staffResponse.data.staff, user: userResponse.data.user };
     },
-    async onSuccess(data) {
+    onSuccess(data) {
       const { staff, user } = data;
       setUserData({ ...user, staff });
       queryClient.invalidateQueries({ queryKey: ["user-info"] });

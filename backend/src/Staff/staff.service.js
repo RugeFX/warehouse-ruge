@@ -1,11 +1,11 @@
-const { findAll, createData, findById, updateData, deleteData } = require('./staff.repository')
+const { findAll, createData, findOrFail, updateData, deleteData } = require('./staff.repository')
 
 const getAllStaff = async () => {
   const staff = await findAll()
   return staff
 }
 const getStaffById = async (id) => {
-  const staff = await findById(id)
+  const staff = await findOrFail({ id })
   return staff
 }
 const createStaff = async (name, registerDate, address, phone, image, positionId) => {

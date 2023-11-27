@@ -10,11 +10,9 @@ const findAll = async () => {
   return staff
 }
 
-const findById = async (id) => {
+const findOrFail = async (where) => {
   const staff = await prisma.staff.findUniqueOrThrow({
-    where: {
-      id
-    },
+    where,
     include: {
       user: true,
       position: true
@@ -62,7 +60,7 @@ const deleteData = async (id) => {
 module.exports = {
   findAll,
   createData,
-  findById,
+  findOrFail,
   updateData,
   deleteData
 }

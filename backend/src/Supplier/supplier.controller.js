@@ -71,7 +71,6 @@ router.get('/:id', async (req, res) => {
 })
 router.post('/', async (req, res) => {
   const { name, registerDate, address, phone, information } = req.body
-  console.log(req.file)
   const image = req.file.path
   try {
     await supplierSchema.validateAsync({ name, registerDate, address, phone, image, information })

@@ -1,11 +1,11 @@
-const { findAll, createData, findById, updateData, deleteData } = require('./unit.repository')
+const { findAll, createData, updateData, deleteData, findOrFail } = require('./unit.repository')
 
 const getAllUnit = async () => {
   const unit = await findAll()
   return unit
 }
 const getUnitById = async (id) => {
-  const unit = await findById(id)
+  const unit = await findOrFail({ id })
   return unit
 }
 const createUnit = async (payload) => {

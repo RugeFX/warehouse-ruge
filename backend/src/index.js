@@ -10,6 +10,7 @@ const SupplierController = require('./Supplier/supplier.controller')
 const UnitController = require('./Unit/unit.controller')
 const CategoryController = require('./Category/category.controller')
 const ProductController = require('./Product/product.controller')
+const RestockController = require('./Restock/restock.controller')
 // ------------------------------------------------------------//
 const app = express()
 dotenv.config()
@@ -28,6 +29,7 @@ app.use('/supplier', SupplierController)
 app.use('/unit', UnitController)
 app.use('/category', CategoryController)
 app.use('/product', ProductController)
+app.use('/restock', RestockController)
 
 app.listen(PORT, () => {
   console.log(`Server running on port : ${PORT}`)

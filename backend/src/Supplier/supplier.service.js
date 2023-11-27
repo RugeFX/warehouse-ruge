@@ -1,11 +1,11 @@
-const { findAll, createData, findById, updateData, deleteData } = require('./supplier.repository')
+const { findAll, createData, findOrFail, updateData, deleteData } = require('./supplier.repository')
 
 const getAllSupplier = async () => {
   const supplier = await findAll()
   return supplier
 }
 const getSupplierById = async (id) => {
-  const supplier = await findById(id)
+  const supplier = await findOrFail({ id })
   return supplier
 }
 const createSupplier = async (name, registerDate, address, phone, image, information) => {

@@ -121,7 +121,27 @@ model Product {
   supplier     Supplier @relation(fields: [supplierId], references: [id])
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
+  restocks     ProductsOnRestock[]
 }
+
+model Restock {
+  id           Int      @id @default(autoincrement())
+  idRestock    String   @default(uuid())
+  restockDate  DateTime
+  supplierId   Int
+  totalSpend   Int
+  products     ProductsOnRestock[]
+}
+
+model ProductsOnRestock {
+  productId    Int
+  product      Product @relation(fields: [productId], references: [id],onDelete: Cascade)    
+  restockId    Int
+  restock      Restock @relation(fields: [restockId], references: [id],onDelete: Cascade)    
+  quantity     Int
+  @@id([productId, restockId])
+}
+
 model RefreshToken {
   id       Int      @id @default(autoincrement())
   token    String   @unique

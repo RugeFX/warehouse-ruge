@@ -1,11 +1,11 @@
-const { findAll, createData, findById, updateData, deleteData } = require('./product.repository')
+const { findAll, createData, findOrFail, updateData, deleteData } = require('./product.repository')
 
 const getAllProduct = async () => {
   const Product = await findAll()
   return Product
 }
 const getProductById = async (id) => {
-  const Product = await findById(id)
+  const Product = await findOrFail({ id })
   return Product
 }
 const createProduct = async (name, stock, netPrice, unitId, categoryId, supplierId, information, image) => {

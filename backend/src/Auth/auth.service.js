@@ -11,8 +11,7 @@ const getUser = async (username, password) => {
   if (comparePassword === false) {
     throw new Error('Password is incorrect !')
   }
-  const privilege = await getMenu(user.staff.positionId)
-  return { user, privilege }
+  return user
 }
 
 const getUserId = async (id) => {
@@ -20,7 +19,8 @@ const getUserId = async (id) => {
   if (user === null) {
     throw new Error('User not found')
   }
-  return user
+  const privilege = await getMenu(user.staff.positionId)
+  return { user, privilege }
 }
 
 const getRefreshToken = async (refreshToken) => {

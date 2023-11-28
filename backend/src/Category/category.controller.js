@@ -20,6 +20,7 @@ router.get('/', async (req, res) => {
   try {
     const category = await getAllCaregory()
     return res.status(200).json({
+      message: 'successfully retrieved data',
       data: category
     })
   } catch (error) {
@@ -34,6 +35,7 @@ router.get('/:id', async (req, res) => {
   try {
     const category = await getCaregoryById(id)
     return res.status(200).json({
+      message: 'successfully retrieved data',
       data: category
     })
   } catch (error) {

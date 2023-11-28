@@ -47,6 +47,7 @@ router.get('/', async (req, res) => {
   try {
     const staff = await getAllSupplier()
     return res.status(200).json({
+      message: 'successfully retrieved data',
       data: staff
     })
   } catch (error) {
@@ -61,6 +62,7 @@ router.get('/:id', async (req, res) => {
   try {
     const staff = await getSupplierById(id)
     return res.status(200).json({
+      message: 'successfully retrieved data',
       data: staff
     })
   } catch (error) {

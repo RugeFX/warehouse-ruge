@@ -19,6 +19,7 @@ router.get('/', async (req, res) => {
   try {
     const restock = await getAllRestock()
     return res.status(200).json({
+      message: 'successfully retrieved data',
       data: restock
     })
   } catch (error) {
@@ -33,6 +34,7 @@ router.get('/:id', async (req, res) => {
   try {
     const restock = await getRestockById(id)
     return res.status(200).json({
+      message: 'successfully retrieved data',
       data: restock
     })
   } catch (error) {

@@ -25,8 +25,8 @@ router.post('/login', async (req, res) => {
     const user = await getUser(username, password)
     const payload = {
       id: user.user.id,
-      username: user.user.username,
-      staffId: user.user.staffId,
+      username: user.username,
+      staffId: user.staffId,
       positionId: user.user.staff.positionId
     }
     const token = createToken(payload)
@@ -43,7 +43,6 @@ router.post('/login', async (req, res) => {
     })
     res.json({
       message: 'Login successful',
-      privilege: user.privilege,
       token,
       refreshtoken
     })
@@ -59,6 +58,7 @@ router.get('/me', jwtValidation, async (req, res) => {
     const { id } = req.user
     const user = await getUserId(id)
     return res.status(200).json({
+      message: 'successfully retrieved data',
       userInfo: user
     })
   } catch (error) {
@@ -104,7 +104,7 @@ router.delete('/logout', jwtValidation, async (req, res) => {
     await deleteRefreshToken(refreshToken)
 
     return res.status(200).json({
-      message: 'Success'
+      message: 'Successfully Logout'
     })
   } catch (error) {
     res.status(400).json({

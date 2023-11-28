@@ -20,6 +20,7 @@ router.get('/', async (req, res) => {
   try {
     const staff = await getAllUnit()
     return res.status(200).json({
+      message: 'successfully retrieved data',
       data: staff
     })
   } catch (error) {
@@ -34,6 +35,7 @@ router.get('/:id', async (req, res) => {
   try {
     const staff = await getUnitById(id)
     return res.status(200).json({
+      message: 'successfully retrieved data',
       data: staff
     })
   } catch (error) {

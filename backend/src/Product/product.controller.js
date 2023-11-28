@@ -46,6 +46,7 @@ router.get('/', async (req, res) => {
   try {
     const staff = await getAllProduct()
     return res.status(200).json({
+      message: 'successfully retrieved data',
       data: staff
     })
   } catch (error) {
@@ -60,6 +61,7 @@ router.get('/:id', async (req, res) => {
   try {
     const staff = await getProductById(id)
     return res.status(200).json({
+      message: 'successfully retrieved data',
       data: staff
     })
   } catch (error) {

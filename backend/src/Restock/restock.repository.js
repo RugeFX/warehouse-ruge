@@ -11,6 +11,13 @@ const findOrFail = async (where) => {
   })
   return restock
 }
+
+const findFirst = async (where) => {
+  const restock = await prisma.productsOnRestock.findFirst({
+    where
+  })
+  return restock
+}
 const createData = async (payload) => {
   const { supplierId, restockDate, totalSpend, products } = payload
   const restock = await prisma.restock.create({
@@ -77,5 +84,6 @@ module.exports = {
   createData,
   findOrFail,
   updateData,
-  deleteData
+  deleteData,
+  findFirst
 }

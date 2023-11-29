@@ -21,10 +21,10 @@ router.use(jwtValidation)
 
 router.get('/', async (req, res) => {
   try {
-    const staff = await getAllPosition()
+    const data = await getAllPosition()
     return res.status(200).json({
       message: 'successfully retrieved data',
-      data: staff
+      data
     })
   } catch (error) {
     return res.status(400).json({
@@ -36,10 +36,10 @@ router.get('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
   const id = Number(req.params.id)
   try {
-    const staff = await getPositionById(id)
+    const data = await getPositionById(id)
     return res.status(200).json({
       message: 'successfully retrieved data',
-      data: staff
+      data
     })
   } catch (error) {
     return res.status(400).json({
@@ -53,7 +53,7 @@ router.post('/', async (req, res) => {
 
     await positionSchema.validateAsync({ name })
     // Create position
-    const newPosition = await createPosition(name)
+    const data = await createPosition(name)
 
     // Get all menu items
     const menuItems = await getAllMenuItem()
@@ -61,7 +61,7 @@ router.post('/', async (req, res) => {
     // Loop through menu items to create privileges
     for (const menuItem of menuItems) {
       const privilege = {
-        positionId: newPosition.id,
+        positionId: data.id,
         menuItemId: menuItem.id,
         view: 0,
         add: 0,
@@ -84,7 +84,7 @@ router.post('/', async (req, res) => {
 
     return res.status(200).json({
       message: 'Data successfully created',
-      data: newPosition
+      data
     })
   } catch (error) {
     if (error.code === 'P2002' && error.meta.target.includes('name')) {
@@ -119,10 +119,10 @@ router.put('/:id', async (req, res) => {
         // Create privilege for the new role
         await updatePrivilege(menuItem.id, privilege)
       }
-      const newData = await updatePosition(id, name)
+      const data = await updatePosition(id, name)
       return res.status(200).json({
         message: 'Success Update Staff Data',
-        staff: newData
+        staff: data
       })
     }
   } catch (error) {

@@ -18,10 +18,10 @@ router.use(jwtValidation)
 
 router.get('/', async (req, res) => {
   try {
-    const category = await getAllCaregory()
+    const data = await getAllCaregory()
     return res.status(200).json({
       message: 'successfully retrieved data',
-      data: category
+      data
     })
   } catch (error) {
     return res.status(400).json({
@@ -33,10 +33,10 @@ router.get('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
   const id = Number(req.params.id)
   try {
-    const category = await getCaregoryById(id)
+    const data = await getCaregoryById(id)
     return res.status(200).json({
       message: 'successfully retrieved data',
-      data: category
+      data
     })
   } catch (error) {
     return res.status(400).json({
@@ -49,10 +49,10 @@ router.post('/', async (req, res) => {
 
   try {
     await categorySchema.validateAsync({ itemType })
-    const newData = await createCaregory(req.body)
+    const data = await createCaregory(req.body)
     return res.status(200).json({
       message: 'Success Create new Category"',
-      category: newData
+      category: data
     })
   } catch (error) {
     return res.status(400).json({
@@ -70,13 +70,13 @@ router.put('/:id', async (req, res) => {
       itemType
     })
 
-    const newData = await updateCaregory(
+    const data = await updateCaregory(
       id,
       req.body
     )
     return res.status(200).json({
       message: 'Success Update Category Data',
-      category: newData
+      category: data
     })
   } catch (error) {
     if (error.code === 'P2025') {

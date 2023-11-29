@@ -18,10 +18,10 @@ router.use(jwtValidation)
 
 router.get('/', async (req, res) => {
   try {
-    const staff = await getAllUnit()
+    const data = await getAllUnit()
     return res.status(200).json({
       message: 'successfully retrieved data',
-      data: staff
+      data
     })
   } catch (error) {
     return res.status(400).json({
@@ -33,10 +33,10 @@ router.get('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
   const id = Number(req.params.id)
   try {
-    const staff = await getUnitById(id)
+    const data = await getUnitById(id)
     return res.status(200).json({
       message: 'successfully retrieved data',
-      data: staff
+      data
     })
   } catch (error) {
     return res.status(400).json({
@@ -49,10 +49,10 @@ router.post('/', async (req, res) => {
 
   try {
     await unitSchema.validateAsync({ unitName, shortName })
-    const newData = await createUnit(req.body)
+    const data = await createUnit(req.body)
     return res.status(200).json({
       message: 'Success Create new Staff"',
-      staff: newData
+      staff: data
     })
   } catch (error) {
     if (error.code === 'P2002' && error.meta.target.includes('name')) {
@@ -76,13 +76,13 @@ router.put('/:id', async (req, res) => {
       shortName
     })
 
-    const newData = await updateUnit(
+    const data = await updateUnit(
       id,
       req.body
     )
     return res.status(200).json({
       message: 'Success Update Staff Data',
-      staff: newData
+      staff: data
     })
   } catch (error) {
     if (error.code === 'P2025') {

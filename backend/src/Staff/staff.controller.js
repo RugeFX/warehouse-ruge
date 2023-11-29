@@ -46,10 +46,10 @@ router.use(jwtValidation)
 
 router.get('/', async (req, res) => {
   try {
-    const staff = await getAllStaff()
+    const data = await getAllStaff()
     return res.status(200).json({
       message: 'successfully retrieved data',
-      data: staff
+      data
     })
   } catch (error) {
     return res.status(400).json({
@@ -61,10 +61,10 @@ router.get('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
   const id = Number(req.params.id)
   try {
-    const staff = await getStaffById(id)
+    const data = await getStaffById(id)
     return res.status(200).json({
       message: 'successfully retrieved data',
-      data: staff
+      data
     })
   } catch (error) {
     return res.status(400).json({
@@ -78,10 +78,10 @@ router.post('/', async (req, res) => {
 
   try {
     await staffSchema.validateAsync({ name, registerDate, address, phone, image, positionId })
-    const newData = await createStaff(name, registerDate, address, phone, image, positionId)
+    const data = await createStaff(name, registerDate, address, phone, image, positionId)
     return res.status(200).json({
       message: 'Success Create new Staff"',
-      staff: newData
+      staff: data
     })
   } catch (error) {
     if (error.code === 'P2002' && error.meta.target.includes('name')) {
@@ -113,7 +113,7 @@ router.put('/:id', async (req, res) => {
     if (imagepath && staff.image && staff.image !== 'null') {
       await fs.unlink('images/staff/' + staff.image)
     }
-    const newData = await updateStaff(
+    const data = await updateStaff(
       id,
       name || staff.name,
       registerDate || staff.registerDate,
@@ -124,7 +124,7 @@ router.put('/:id', async (req, res) => {
     )
     return res.status(200).json({
       message: 'Success Update Staff Data',
-      staff: newData
+      staff: data
     })
   } catch (error) {
     if (error.code === 'P2025') {

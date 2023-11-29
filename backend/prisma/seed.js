@@ -112,6 +112,39 @@ async function main () {
       data: { ...privilege }
     })
   })
+  await prisma.supplier.create({
+    data: {
+      name: 'Raditya',
+      registerDate: new Date(),
+      address: 'jl.tengki',
+      phone: '081219578713',
+      image: 'null',
+      information: 'supplier 1'
+    }
+  })
+  await prisma.category.create({
+    data: {
+      itemType: 'Fashion'
+    }
+  })
+  await prisma.unit.create({
+    data: {
+      unitName: 'Pieces',
+      shortName: 'Pcs'
+    }
+  })
+  await prisma.product.create({
+    data: {
+      name: 'Product A',
+      stock: 0,
+      netPrice: 100000,
+      image: 'null',
+      information: 'Product A',
+      unitId: 1,
+      categoryId: 1,
+      supplierId: 1
+    }
+  })
 }
 main()
   .then(async () => {

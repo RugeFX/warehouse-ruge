@@ -22,12 +22,12 @@ router.post('/login', async (req, res) => {
   try {
     const { username, password } = req.body
     await loginSchema.validateAsync({ username, password })
-    const user = await getUser(username, password)
+    const data = await getUser(username, password)
     const payload = {
-      id: user.user.id,
-      username: user.username,
-      staffId: user.staffId,
-      positionId: user.user.staff.positionId
+      id: data.id,
+      username: data.username,
+      staffId: data.staffId,
+      positionId: data.staff.positionId
     }
     const token = createToken(payload)
     const refreshtoken = jwt.sign(payload, process.env.SECRET_SERVER, { expiresIn: '7d' })
@@ -56,10 +56,10 @@ router.post('/login', async (req, res) => {
 router.get('/me', jwtValidation, async (req, res) => {
   try {
     const { id } = req.user
-    const user = await getUserId(id)
+    const data = await getUserId(id)
     return res.status(200).json({
       message: 'successfully retrieved data',
-      userInfo: user
+      userInfo: data
     })
   } catch (error) {
     res.status(400).json({
@@ -117,11 +117,11 @@ router.post('/register', jwtValidation, async (req, res) => {
   try {
     const { username, password, staffId } = req.body
     await userSchema.validateAsync({ username, password, staffId })
-    const newUser = await creatingUser(username, password, staffId)
+    const data = await creatingUser(username, password, staffId)
 
     return res.status(200).json({
       message: 'successful create new user',
-      user: newUser
+      user: data
     })
   } catch (error) {
     if (error.code === 'P2002' && error.meta.target.includes('staffId')) {
@@ -145,11 +145,11 @@ router.put('/:id', jwtValidation, async (req, res) => {
     const id = Number(req.params.id)
     const { username, oldPassword } = req.body
     await updateUserSchema.validateAsync({ username, oldPassword })
-    const newUser = await updatingUser(id, req.body)
+    const data = await updatingUser(id, req.body)
 
     return res.status(200).json({
       message: 'successful update new user',
-      user: newUser
+      user: data
     })
   } catch (error) {
     console.log(error)

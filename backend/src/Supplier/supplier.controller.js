@@ -45,10 +45,10 @@ router.use(jwtValidation)
 
 router.get('/', async (req, res) => {
   try {
-    const staff = await getAllSupplier()
+    const data = await getAllSupplier()
     return res.status(200).json({
       message: 'successfully retrieved data',
-      data: staff
+      data
     })
   } catch (error) {
     return res.status(400).json({
@@ -60,10 +60,10 @@ router.get('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
   const id = Number(req.params.id)
   try {
-    const staff = await getSupplierById(id)
+    const data = await getSupplierById(id)
     return res.status(200).json({
       message: 'successfully retrieved data',
-      data: staff
+      data
     })
   } catch (error) {
     return res.status(400).json({
@@ -76,10 +76,10 @@ router.post('/', async (req, res) => {
   const image = req.file.path
   try {
     await supplierSchema.validateAsync({ name, registerDate, address, phone, image, information })
-    const newData = await createSupplier(name, registerDate, address, phone, image, information)
+    const data = await createSupplier(name, registerDate, address, phone, image, information)
     return res.status(200).json({
       message: 'Success Create new Supplier',
-      staff: newData
+      staff: data
     })
   } catch (error) {
     if (error.code === 'P2002' && error.meta.target.includes('name')) {
@@ -109,7 +109,7 @@ router.put('/:id', async (req, res) => {
     if (imagepath) {
       await fs.unlink(supplier.image)
     }
-    const newData = await updateSupplier(
+    const data = await updateSupplier(
       id,
       name || supplier.name,
       registerDate || supplier.registerDate,
@@ -120,7 +120,7 @@ router.put('/:id', async (req, res) => {
     )
     return res.status(200).json({
       message: 'Success Update Supplier Data',
-      staff: newData
+      staff: data
     })
   } catch (error) {
     if (error.code === 'P2025') {

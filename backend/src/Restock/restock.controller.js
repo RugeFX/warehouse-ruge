@@ -17,10 +17,10 @@ router.use(jwtValidation)
 
 router.get('/', async (req, res) => {
   try {
-    const restock = await getAllRestock()
+    const data = await getAllRestock()
     return res.status(200).json({
       message: 'successfully retrieved data',
-      data: restock
+      data
     })
   } catch (error) {
     return res.status(400).json({
@@ -32,10 +32,10 @@ router.get('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
   const id = Number(req.params.id)
   try {
-    const restock = await getRestockById(id)
+    const data = await getRestockById(id)
     return res.status(200).json({
       message: 'successfully retrieved data',
-      data: restock
+      data
     })
   } catch (error) {
     return res.status(400).json({
@@ -48,10 +48,10 @@ router.post('/', async (req, res) => {
 
   try {
     await restockSchema.validateAsync({ supplierId, restockDate, totalSpend, products })
-    const newData = await createRestock(req.body)
+    const data = await createRestock(req.body)
     return res.status(200).json({
       message: 'Success Create new restock',
-      restock: newData
+      restock: data
     })
   } catch (error) {
     console.log(error)
@@ -67,10 +67,10 @@ router.put('/:id', async (req, res) => {
 
   try {
     await updateRestcokSchema.validateAsync({ supplierId, restockDate, totalSpend, products })
-    const newData = await updateRestock(id, req.body)
+    const data = await updateRestock(id, req.body)
     return res.status(200).json({
       message: 'Success Create new restock',
-      restock: newData
+      restock: data
     })
   } catch (error) {
     console.log(error)

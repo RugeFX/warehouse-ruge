@@ -1,3 +1,4 @@
+import { Product } from "./product";
 import type { MenuGroup, Staff, User } from "./user";
 
 export type BaseResponse = {
@@ -24,9 +25,13 @@ export type UserUpdateResponse = BaseResponse & {
 };
 
 export type MyProfileResponse = {
-  userInfo: User;
+  userInfo: { user: User; privilege: MenuGroup[] };
 };
 
 export type PrivilegeResponse = {
   privileges: MenuGroup[];
+};
+
+export type GetAllProductsResponse = BaseResponse & {
+  data: Product[];
 };

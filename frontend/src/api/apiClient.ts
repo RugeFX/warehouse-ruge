@@ -30,6 +30,8 @@ apiClient.interceptors.response.use(
 
           return apiClient(config);
         } catch (_error) {
+          useStore.getState().actions.clearUserInfo();
+
           return Promise.reject(_error);
         }
       }

@@ -3,32 +3,34 @@ import MainNav from "./components/MainNav";
 import SidebarNav from "./components/SidebarNav";
 import UserNav from "./components/UserNav";
 import { Outlet, useLoaderData } from "react-router-dom";
-import { getPrivileges } from "@/auth/authService";
-import type { PrivilegeResponse } from "@/types/response";
+import { getProfileInfo } from "@/auth/authService";
+import type { MyProfileResponse } from "@/types/response";
 import type { FetchQueryOptions, QueryClient } from "@tanstack/react-query";
 import loaderRequireAuth from "@/auth/loaderRequireAuth";
 
-export const privilegesQuery: FetchQueryOptions<PrivilegeResponse> = {
-  queryKey: ["user-privileges"],
-  queryFn: async () => getPrivileges(),
+export const privilegesQuery: FetchQueryOptions<MyProfileResponse["userInfo"]> = {
+  queryKey: ["user-info", "privileges"],
+  queryFn: async () => {
+    return (await getProfileInfo()).userInfo;
+  },
 };
 
 export const loader = (queryClient: QueryClient) => async () => {
   await loaderRequireAuth();
 
   return (
-    queryClient.getQueryData<PrivilegeResponse>(privilegesQuery.queryKey) ??
+    queryClient.getQueryData<MyProfileResponse["userInfo"]>(privilegesQuery.queryKey) ??
     (await queryClient.fetchQuery(privilegesQuery))
   );
 };
 
 export default function DashboardLayout() {
-  const { privileges } = useLoaderData() as Awaited<ReturnType<ReturnType<typeof loader>>>;
+  const { privilege } = useLoaderData() as Awaited<ReturnType<ReturnType<typeof loader>>>;
 
   return (
     <>
       <div className="flex">
-        <SidebarNav privileges={privileges} />
+        <SidebarNav privileges={privilege} />
         <div className="flex-1">
           <div className="flex-col md:flex">
             <div className="border-b">

@@ -18,7 +18,7 @@ export default function useLogin() {
       setPrivileges(privilege);
 
       const res = await fetchInfo();
-      setUserData(res.data?.userInfo);
+      setUserData(res.data?.userInfo.user);
     },
   });
 }

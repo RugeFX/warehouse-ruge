@@ -6,7 +6,7 @@ export interface AuthSlice {
   refreshToken?: string;
   userData?: User;
   privileges?: MenuGroup[];
-  actions: {
+  authActions: {
     setAccessToken: (accessToken?: string) => void;
     setRefreshToken: (refreshToken?: string) => void;
     setUserData: (userData?: User) => void;
@@ -15,7 +15,7 @@ export interface AuthSlice {
   };
 }
 
-const initialState: Omit<AuthSlice, "actions"> = {
+const initialState: Omit<AuthSlice, "authActions"> = {
   accessToken: undefined,
   refreshToken: undefined,
   userData: undefined,
@@ -27,7 +27,7 @@ export const createAuthSlice: StateCreator<AuthSlice> = (set) => ({
   refreshToken: undefined,
   userData: undefined,
   privileges: undefined,
-  actions: {
+  authActions: {
     setAccessToken(accessToken) {
       set(() => ({ accessToken }));
     },

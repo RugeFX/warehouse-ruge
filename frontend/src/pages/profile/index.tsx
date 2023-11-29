@@ -25,7 +25,7 @@ export default function ProfilePage() {
   return (
     <main className="space-y-4 p-8 pt-6">
       <h1 className="text-3xl font-bold tracking-tight">Profile</h1>
-      <ProfileUpdateForm userData={userData.userInfo} />
+      <ProfileUpdateForm userData={userData.userInfo.user} />
     </main>
   );
 }

@@ -26,3 +26,11 @@ export function changeRootTheme(theme: Theme) {
 export function apiAsset(path: string) {
   return `${import.meta.env.VITE_BASE_API_URL}/${path}`;
 }
+
+export function convertToIDR(number: number) {
+  return new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR" }).format(number);
+}
+
+export function convertToUSD(number: number) {
+  return new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(number);
+}

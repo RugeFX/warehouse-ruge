@@ -39,7 +39,7 @@ export const refreshAccessToken = async () => {
   return res.data;
 };
 
-export const updateLocalAccessToken = (accessToken: string) => {
+export const updateLocalAccessToken = (accessToken?: string) => {
   useStore.setState({ accessToken });
 };
 
